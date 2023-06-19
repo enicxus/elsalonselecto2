@@ -1,0 +1,34 @@
+{% extends 'menu/PlantillaEntorno.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>El Salón Selecto</title>
+<link rel="stylesheet" href="{% static 'menu\css\recuperacion.css' %}"/>
+{% endblock titulo %}
+
+{% block headstyle %}
+<script>
+    function validarInput(event) {
+        const teclaPresionada = event.key;
+        if (teclaPresionada === " ") {
+            event.preventDefault();
+        }
+    }
+</script>
+{% endblock headstyle %}
+
+{% block body %}
+<div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <form action="#">
+            {% csrf_token %}
+            <div class="input-container">
+                <span>Cambiar contraseña.</span>
+                <input type="password" placeholder="Nueva contraseña" id="nueva-contraseña" minlength="10" maxlength="14" onkeydown="validarInput(event)" required />
+                <input type="password" placeholder="Confirmar contraseña" id="confirmar-contraseña" minlength="10" maxlength="14" onkeydown="validarInput(event)" required/>
+            </div>
+            <button type="submit" formaction="index.html">Aceptar</button>
+        </form>
+    </div>
+</div>
+{% endblock body %}

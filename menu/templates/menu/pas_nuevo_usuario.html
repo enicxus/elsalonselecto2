@@ -1,0 +1,53 @@
+{% extends 'menu/PlantillaEntorno.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>El Salón Selecto</title>
+<link rel="stylesheet" href="{% static 'menu\css\recuperacion.css' %}"/>
+{% endblock titulo %}
+
+{% block headstyle %}
+<script>
+    function validarInput(event) {
+        const teclaPresionada = event.key;
+        if (teclaPresionada === " ") {
+            event.preventDefault();
+        }
+    }
+
+    function compararContraseñas() {
+        const contraseña = document.getElementById("contraseña").value;
+        const confirmarContraseña = document.getElementById("confi-contraseña").value;
+        const mensaje = document.getElementById("mensaje-error");
+
+        if (contraseña !== confirmarContraseña) {
+            mensaje.textContent = "Las contraseñas no coinciden";
+            mensaje.style.color = "red";
+            return false;
+        } else {
+            mensaje.textContent = "";
+            return true;
+        }
+    }
+</script>
+{% endblock headstyle %}
+
+{% block body %}
+<div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <form method="post" action="{% url 'mi_formulario' %}">
+            {% csrf_token %}
+            <div class="input-container">
+                <span>Crear Contraseña.</span>
+                <input type="password" placeholder="Contraseña" name="contraseña" id="contraseña" minlength="10" maxlength="14"
+                    onkeydown="validarInput(event)" required />
+                <input type="password" placeholder="Confirmar contraseña" name="confi-contraseña" id="confi-contraseña" minlength="10"
+                    maxlength="14" onkeydown="validarInput(event)" required />
+            </div>
+            <button type="submit" formaction="{% url 'mi_formulario' %}" onclick="return compararContraseñas()">Aceptar</button>
+            <p id="mensaje-error"></p>
+        </form>
+        
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,63 @@
+{% extends 'menu/PlantillaEntorno.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>El Salón Selecto</title>
+<link rel="stylesheet" href="{% static 'menu/css/style.css' %}" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'menu/js/vali_index.js' %}"></script>
+{% endblock titulo %}
+
+{% block body %}
+<section class="wrapper">
+  <div class="form signup">
+    <header>Iniciar sesión</header>
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <input type="email" id="login-email" name="email" placeholder="Correo" required />
+      <input
+        type="password"
+        id="login-password"
+        name="password"
+        placeholder="Contraseña"
+        minlength="10"
+        maxlength="14"
+        required
+      />
+      <a href="recuperacion.html">¿Olvidaste tu contraseña?</a>
+      <button type="submit" formaction="entorno.html">Ingresar</button>
+    </form>
+    {% if error_message %}
+    <p>{{ error_message }}</p>
+  {% endif %}
+</div>
+  </div>
+
+  <div class="form login">
+    <header>Registrarse</header>
+    <form method="post" action="{% url 'register' %}">
+      {% csrf_token %}
+      <label for="email">Correo electrónico:</label>
+      <input type="email" id="email" name="email" required>
+      <p>Se enviará un código de activación</p>
+      <input type="hidden" name="action" value="send_code">
+      <button type="submit" formaction="{% url 'register' %}" formmethod="post">
+        Enviar código
+      </button>
+    </form>
+  </div>
+
+  <script>
+    const wrapper = document.querySelector(".wrapper"),
+      signupHeader = document.querySelector(".signup header"),
+      loginHeader = document.querySelector(".login header");
+
+    loginHeader.addEventListener("click", () => {
+      wrapper.classList.add("active");
+    });
+    signupHeader.addEventListener("click", () => {
+      wrapper.classList.remove("active");
+    });
+  </script>
+</section>
+{% endblock body %}

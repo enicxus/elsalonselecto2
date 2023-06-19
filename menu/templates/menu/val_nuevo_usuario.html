@@ -1,0 +1,72 @@
+{% extends 'menu/PlantillaEntorno.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>El Salón Selecto</title>
+<link rel="stylesheet" href="{% static 'menu\css\recuperacion.css' %}"/>
+{% endblock titulo %}
+
+{% block body %}
+<div class="container" id="container">
+    <div class="form-container sign-up-container">
+        {% load static %}
+
+        {% block javascript %}
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="{% static 'menu/js/confirmacion.js' %}"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const confirmarBtn = document.getElementById('confirmarBtn');
+                    confirmarBtn.addEventListener('click', function (event) {
+                        event.preventDefault(); // Evitar el comportamiento predeterminado del formulario
+                        const codigoInput = document.querySelector('input[name="codigo_correo_nuevo_usuario"]');
+                        const codigoIngresado = codigoInput.value;
+    
+                        // Enviar el código ingresado al servidor para validación
+                        fetch('/validacion_nuevo_usuario/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': '{{ csrf_token }}'
+                            },
+                            body: JSON.stringify({
+                                codigo_correo_nuevo_usuario: codigoIngresado
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.valid) {
+                                // El código de validación es correcto
+                                document.getElementById('formulario2').submit(); // Envío automático del formulario
+                            } else {
+                                // El código de validación es incorrecto
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Código inválido',
+                                    text: 'El código ingresado no es válido.',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Ok'
+                                }).then(() => {
+                                    codigoInput.value = ''; // Limpiar el campo de código ingresado
+                                    codigoInput.focus(); // Enfocar nuevamente el campo de código ingresado
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.log('Error:', error);
+                        });
+                    });
+                });
+            </script>
+        {% endblock %}
+        <form id="formulario2" method="post" action="{% url 'validacion_nuevo_usuario' %}">
+            {% csrf_token %}
+            <div class="input-container">
+                <span>Validar Correo.</span>
+                <input type="text" name="codigo_correo_nuevo_usuario" placeholder="XXXX-XXXX" minlength="9" maxlength="9" pattern="\d{4}-\d{4}" required title="Debe ingresar un número de 8 dígitos separados por un guión (-). Ejemplo: 1234-5678"> 
+            </div>
+            <button type="submit" formmethod="post">Confirmar</button>
+        </form>
+    </div>
+</div>
+{% endblock body %}

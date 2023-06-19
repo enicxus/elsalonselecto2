@@ -1,0 +1,655 @@
+{% extends 'menu/PlantillaEntorno.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>El Salón selecto</title>
+<link rel='stylesheet' href='https://vjs.zencdn.net/5-unsafe/video-js.css'>
+<link rel="stylesheet" href="{% static 'menu\css\style_entorno.css' %}">
+<link rel="stylesheet" href="{% static 'menu/css/valoracion.css' %}">
+{% endblock titulo %}
+  
+{% block headstyle %}
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+
+  * {
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  html {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  p{
+    color: #000000;
+  }
+
+  :root {
+    --body-font: "Inter", sans-serif;
+    --theme-bg: #FFF;
+    --body-color: #ffffff;
+    --button-bg: #353340;
+    --border-color: rgb(128 129 145 / 24%);
+    --video-bg: #d7def7;
+    --delay: 0s;
+  }
+
+  body {
+    font-family: var(--body-font);
+    color: var(--body-color);
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1em 2em;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  body:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    content: "";
+  }
+
+  .container {
+    background-color: var(--theme-bg);
+    max-width: 1240px;
+    max-height: 900px;
+    height: 95vh;
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+
+  .sidebar {
+    width: 220px;
+    height: 100%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition-duration: 0.2s;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .sidebar .logo {
+    display: none;
+    width: 30px;
+    height: 30px;
+    background-color: #22b07d;
+    flex-shrink: 0;
+    color: #000000;
+    align-items: center;
+    border-radius: 50%;
+    justify-content: center;
+  }
+
+  .sidebar .logo-expand {
+    text-decoration: none;
+    color: #000000;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 34px;
+    position: sticky;
+    top: 0;
+  }
+
+  .sidebar .logo-expand:before {
+    content: "";
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 200px;
+    height: 70px;
+    z-index: -1;
+  }
+
+  .sidebar-link:hover,
+  .sidebar-link.is-active {
+    color: #000000;
+    font-weight: 600;
+  }
+
+  .sidebar-link:hover:nth-child(2n+1) svg,
+  .sidebar-link.is-active:nth-child(2n+1) svg {
+    background: #ff7551;
+  }
+
+  .sidebar-link:hover:nth-child(2n) svg,
+  .sidebar-link.is-active:nth-child(2n) svg {
+    background: #32a7e2;
+  }
+
+  .sidebar-link:hover:nth-child(2n+3) svg,
+  .sidebar-link.is-active:nth-child(2n+3) svg {
+    background: #6c5ecf;
+  }
+
+  .sidebar.collapse {
+    width: 90px;
+    border-right: 1px solid var(--border-color);
+  }
+
+  .sidebar.collapse .logo-expand,
+  .sidebar.collapse .side-title {
+    display: none;
+  }
+
+  .sidebar.collapse .logo {
+    display: flex;
+  }
+
+  .sidebar.collapse .side-wrapper {
+    width: 30px;
+  }
+
+  .sidebar.collapse .side-menu svg {
+    margin-right: 30px;
+  }
+
+  @-webkit-keyframes bottom {
+    0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+  @keyframes bottom {
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+  .side-menu {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .side-menu a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--body-color);
+  }
+
+  .side-menu a+a {
+    margin-top: 26px;
+  }
+
+  .side-menu svg {
+    width: 30px;
+    padding: 8px;
+    border-radius: 10px;
+    background-color: var(--button-bg);
+    flex-shrink: 0;
+    margin-right: 16px;
+  }
+
+  .side-menu svg:hover {
+    color: #000000;
+  }
+
+  .side-title {
+    font-size: 12px;
+    letter-spacing: 0.07em;
+    margin-bottom: 24px;
+    color: #000000;
+  }
+
+  .side-wrapper {
+    border-bottom: 1px solid var(--border-color);
+    padding: 36px 0;
+    width: 145px;
+  }
+
+  .side-wrapper+.side-wrapper {
+    border-bottom: none;
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 30px;
+  }
+
+
+  .user-settings {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .user-settings svg {
+    width: 10px;
+    flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 575px) {
+    .user-settings svg {
+    display: none;
+  }
+}
+
+
+  @media screen and (max-width: 575px) {
+    .user-settings .notify .notification {
+    display: none;
+  }
+}
+
+  .user-img {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .user-name {
+    color: #000000;
+    font-size: 14px;
+    margin: 0 6px 0 12px;
+  }
+
+  @media screen and (max-width: 575px) {
+    .user-name {
+    display: none;
+  }
+}
+
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0 30px 30px;
+    flex-grow: 1;
+    overflow: auto;
+  }
+
+  .anim {
+    -webkit-animation: bottom 0.8s var(--delay) both;
+    animation: bottom 0.8s var(--delay) both;
+    background-color: #FFF;
+  }
+
+  .main-header {
+    font-size: 30px;
+    color: #000000;
+    font-weight: 700;
+    padding-bottom: 20px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 11;
+  }
+
+
+  .small-header {
+    font-size: 24px;
+    font-weight: 500;
+    color: #000000;
+    margin: 30px 0 20px;
+  }
+
+  .main-blogs {
+    display: flex;
+    align-items: center;
+  }
+
+
+
+  .main-blog__title {
+    font-size: 25px;
+    max-width: 12ch;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #ffffff;
+    margin-bottom: 30px;
+  }
+
+  .main-blog {
+    background-image: url("{% static 'menu/img/imagen_principal.jpg' %}");
+    background-size: 80%;
+    background-position-x: 235px;
+    background-position-y: -100px;
+    background-color: #31abbd;
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    padding: 30px;
+    border-radius: 20px;
+    align-self: stretch;
+    overflow: hidden;
+    position: relative;
+    transition: background 0.3s;
+    background-repeat: no-repeat;
+  }
+
+  .main-blog+.main-blog {
+    margin-left: 20px;
+    width: 35%;
+    background-image: url("{% static 'menu/img/segunda_imagen.jpg' %}");
+    background-color: unset;
+    background-position-x: 0;
+    background-size: 139%;
+    filter: saturate(1.4);
+  }
+
+  @media screen and (max-width: 905px) {
+
+    .main-blog,
+    .main-blog+.main-blog {
+    width: 50%;
+    padding: 30px;
+  }
+
+  .main-blog {
+    background-size: cover;
+    background-position-x: center;
+    background-blend-mode: overlay;
+  }
+}
+
+
+
+  .videos {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+  }
+
+  .agregar_al_carrito{
+    background-color: #c2c8eb;
+    border-radius: 10px;
+    width: 120px;
+    margin-left: 50px;
+  }
+
+
+  @media screen and (max-width: 980px) {
+    .videos {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .video {
+    position: relative;
+    background-color: var(--video-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: 0.4s;
+    color: #000000;
+  }
+
+  .video-wrapper {
+    position: relative;
+  }
+
+  .video-name {
+    color: #000000;
+    font-size: 16px;
+    line-height: 1.4em;
+    padding: 12px 20px 0;
+    overflow: hidden;
+    background-color: var(--video-bg);
+    z-index: 9;
+    position: relative;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+
+  .video:hover video {
+    transform: scale(1.6);
+    transform-origin: center;
+  }
+
+
+  video {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    display: block;
+    cursor: pointer;
+    transition: 0.4s;
+  }
+
+
+
+  @media screen and (max-width: 735px) {
+    .main-blogs {
+      flex-wrap: wrap;
+    }
+
+    .main-blog,
+    .main-blog+.main-blog {
+      width: 100%;
+    }
+
+    .videos {
+      grid-template-columns: 1fr;
+    }
+
+    .main-blog+.main-blog {
+      margin-left: 0;
+      margin-top: 20px;
+      background-size: cover;
+    }
+  }
+
+  @media screen and (max-width: 475px) {
+    .main-blog__title {
+      font-size: 20px;
+    }
+
+
+
+    .main-container {
+      padding: 0 20px 20px;
+    }
+
+    .header {
+      padding: 20px;
+    }
+
+    .sidebar.collapse {
+      width: 40px;
+    }
+
+    .sidebar {
+      align-items: center;
+    }
+
+    body {
+      padding: 0;
+    }
+
+  .container {
+    height: 100vh;
+    border-radius: 0;
+    max-height: 100%;
+  }
+}
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(21, 20, 26, 0.63);
+    border-radius: 10px;
+  }
+</style>
+{% endblock headstyle %}
+
+{% block body %}
+<div class="container">
+  <div class="sidebar">
+    <span class="logo">S</span>
+    <a class="logo-expand" href="#">El Salón Selecto</a>
+    <div class="side-wrapper">
+      <div class="side-title">MENÚ</div>
+      <div class="side-menu">
+        <a class="sidebar-link discover is-active" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M9.135 20.773v-3.057c0-.78.637-1.414 1.423-1.414h2.875c.377 0 .74.15 1.006.414.267.265.417.625.417 1v3.057c-.002.325.126.637.356.867.23.23.544.36.87.36h1.962a3.46 3.46 0 002.443-1 3.41 3.41 0 001.013-2.422V9.867c0-.735-.328-1.431-.895-1.902l-6.671-5.29a3.097 3.097 0 00-3.949.072L3.467 7.965A2.474 2.474 0 002.5 9.867v8.702C2.5 20.464 4.047 22 5.956 22h1.916c.68 0 1.231-.544 1.236-1.218l.027-.009z" />
+          </svg>
+          Casa
+        </a>
+        <a href="platillos.html" class="sidebar-link trending" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M10.835 12.007l.002.354c.012 1.404.096 2.657.242 3.451 0 .015.16.802.261 1.064.16.38.447.701.809.905a2 2 0 00.91.219c.249-.012.66-.137.954-.242l.244-.094c1.617-.642 4.707-2.74 5.891-4.024l.087-.09.39-.42c.245-.322.375-.715.375-1.138 0-.379-.116-.758-.347-1.064-.07-.099-.18-.226-.28-.334l-.379-.397c-1.305-1.321-4.129-3.175-5.593-3.79 0-.013-.91-.393-1.343-.407h-.057c-.665 0-1.286.379-1.603.991-.087.168-.17.496-.233.784l-.114.544c-.13.874-.216 2.216-.216 3.688zm-6.332-1.525C3.673 10.482 3 11.162 3 12a1.51 1.51 0 001.503 1.518l3.7-.328c.65 0 1.179-.532 1.179-1.19 0-.658-.528-1.191-1.18-1.191l-3.699-.327z" />
+          </svg>
+          Platillos
+        </a>
+        <a href="carrito.html" class="sidebar-link" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M11.23 7.29V3.283c0-.427.34-.782.77-.782.385 0 .711.298.763.677l.007.104v4.01h4.78c2.38 0 4.335 1.949 4.445 4.38l.005.215v5.04c0 2.447-1.887 4.456-4.232 4.569l-.208.005H6.44c-2.38 0-4.326-1.94-4.435-4.379L2 16.905v-5.03c0-2.447 1.878-4.466 4.222-4.58l.208-.004h4.8v6.402l-1.6-1.652a.755.755 0 00-1.09 0 .81.81 0 00-.22.568c0 .157.045.32.14.459l.08.099 2.91 3.015c.14.155.34.237.55.237a.735.735 0 00.465-.166l.075-.071 2.91-3.015c.3-.31.3-.816 0-1.126a.755.755 0 00-1.004-.077l-.086.077-1.59 1.652V7.291h-1.54z" />
+          </svg>
+          Carrito
+        </a>
+        <a href="form.html" class="sidebar-link" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M17.769 8.382H22C22 4.985 19.964 3 16.516 3H7.484C4.036 3 2 4.985 2 8.338v7.324C2 19.015 4.036 21 7.484 21h9.032C19.964 21 22 19.015 22 15.662v-.313h-4.231c-1.964 0-3.556-1.552-3.556-3.466 0-1.915 1.592-3.467 3.556-3.467v-.034zm0 1.49h3.484c.413 0 .747.326.747.728v2.531a.746.746 0 01-.747.728H17.85c-.994.013-1.864-.65-2.089-1.595a1.982 1.982 0 01.433-1.652 2.091 2.091 0 011.576-.74zm.151 2.661h.329a.755.755 0 00.764-.745.755.755 0 00-.764-.746h-.329a.766.766 0 00-.54.213.727.727 0 00-.224.524c0 .413.34.75.764.754zM6.738 8.382h5.644a.755.755 0 00.765-.746.755.755 0 00-.765-.745H6.738a.755.755 0 00-.765.737c0 .413.341.75.765.754z" />
+          </svg>
+          Tarjeta
+        </a>
+        <a href="agregar_platillos.html" class="sidebar-link trending" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M10.835 12.007l.002.354c.012 1.404.096 2.657.242 3.451 0 .015.16.802.261 1.064.16.38.447.701.809.905a2 2 0 00.91.219c.249-.012.66-.137.954-.242l.244-.094c1.617-.642 4.707-2.74 5.891-4.024l.087-.09.39-.42c.245-.322.375-.715.375-1.138 0-.379-.116-.758-.347-1.064-.07-.099-.18-.226-.28-.334l-.379-.397c-1.305-1.321-4.129-3.175-5.593-3.79 0-.013-.91-.393-1.343-.407h-.057c-.665 0-1.286.379-1.603.991-.087.168-.17.496-.233.784l-.114.544c-.13.874-.216 2.216-.216 3.688zm-6.332-1.525C3.673 10.482 3 11.162 3 12a1.51 1.51 0 001.503 1.518l3.7-.328c.65 0 1.179-.532 1.179-1.19 0-.658-.528-1.191-1.18-1.191l-3.699-.327z" />
+          </svg>
+          Agregar platillos
+        </a>
+        <a href="eliminar_platillos.html" class="sidebar-link trending" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M10.835 12.007l.002.354c.012 1.404.096 2.657.242 3.451 0 .015.16.802.261 1.064.16.38.447.701.809.905a2 2 0 00.91.219c.249-.012.66-.137.954-.242l.244-.094c1.617-.642 4.707-2.74 5.891-4.024l.087-.09.39-.42c.245-.322.375-.715.375-1.138 0-.379-.116-.758-.347-1.064-.07-.099-.18-.226-.28-.334l-.379-.397c-1.305-1.321-4.129-3.175-5.593-3.79 0-.013-.91-.393-1.343-.407h-.057c-.665 0-1.286.379-1.603.991-.087.168-.17.496-.233.784l-.114.544c-.13.874-.216 2.216-.216 3.688zm-6.332-1.525C3.673 10.482 3 11.162 3 12a1.51 1.51 0 001.503 1.518l3.7-.328c.65 0 1.179-.532 1.179-1.19 0-.658-.528-1.191-1.18-1.191l-3.699-.327z" />
+          </svg>
+          Eliminar platillos
+        </a>
+      </div>
+    </div>
+    <div class="side-wrapper">
+      <div class="side-menu">
+      </div>
+    </div>
+  </div>
+  <div class="wrapper">
+    <div class="header">
+      <div class="user-menu">
+        <div class="user-info">
+          <img src="{% static 'menu/img/foto_perfil.jpg' %}" alt="Foto de perfil del usuario">
+          <p class="user-name">Anderson</p>
+          <div class="arrow-down"></div>
+        </div>
+        <div class="dropdown-menu">
+          <ul>
+            <li><a href="{% url 'perfil' %}">Perfil</a></li>
+            <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
+            <li><a href="{% url 'index' %}">Cerrar sesión</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="main-container">
+      <div class="main-header anim" style="--delay: 0s">Disfruta</div>
+      <div class="main-blogs">
+        <div class="main-blog anim" style="--delay: .1s">
+          <div class="main-blog__title">Los platillos mas exquisitos <br> <br> ¡Disfrutalos ya!</div>
+          <div class="main-blog__author">
+          </div>
+        </div>
+        <div class="main-blog anim" style="--delay: .2s">
+          <div class="main-blog__title">Satisface tu paladar </div>
+        </div>
+      </div>
+      <div class="small-header anim" style="--delay: .3s">Platillos Especiales</div>
+      <!-- Inicio videos-->
+      <div class="menu">
+        {% for comida in comida %}
+            <div class="platillo">
+              <img src="{{ comida.foto.url }}" alt="Platillo {{ forloop.counter }}">
+              <div class="overlay"></div>
+              <div class="informacion">
+                <h2>{{ comida.nombre }}</h2>
+                <p>{{ comida.descripcion }}</p>
+                <div class="precio">${{ comida.precio }}</div>
+                <div class="rating">
+                  <input type="radio" id="star5-{{ forloop.counter }}" name="rating-{{ forloop.counter }}" value="5" />
+                  <label for="star5-{{ forloop.counter }}"></label>
+                  <input type="radio" id="star4-{{ forloop.counter }}" name="rating-{{ forloop.counter }}" value="4" />
+                  <label for="star4-{{ forloop.counter }}"></label>
+                  <input type="radio" id="star3-{{ forloop.counter }}" name="rating-{{ forloop.counter }}" value="3" />
+                  <label for="star3-{{ forloop.counter }}"></label>
+                  <input type="radio" id="star2-{{ forloop.counter }}" name="rating-{{ forloop.counter }}" value="2" />
+                  <label for="star2-{{ forloop.counter }}"></label>
+                  <input type="radio" id="star1-{{ forloop.counter }}" name="rating-{{ forloop.counter }}" value="1" />
+                  <label for="star1-{{ forloop.counter }}"></label>
+                </div>
+                <p id="average-rating">Promedio de valoración: </p>
+                <br><br>
+                <a href="#" class="boton-comprar">Comprar</a>
+              </div>
+            </div>
+        {% endfor %}
+      </div>
+      
+      </div>
+      <!--Fin videos-->
+    </div>
+{% endblock body %}
+
+{% block script %}
+<script src="{% static 'menu/js/valoracion.js' %}"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://vjs.zencdn.net/5-unsafe/video.js'></script>
+<script src="{% static 'menu\js\script_entorno.js' %}"></script>
+{% endblock script %}

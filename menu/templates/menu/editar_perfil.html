@@ -1,0 +1,66 @@
+{% extends 'menu/PlantillaEntorno.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>El Salón Selecto</title>
+{% endblock titulo %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{% static 'menu\css\recuperacion.css' %}" />
+{% endblock estilos %}
+
+{% block headstyle %}
+<script>
+    const numeroInput = document.getElementById('numero');
+    const numeroErrorMessage = document.querySelector('#numero + .error-message');
+
+    numeroInput.addEventListener('invalid', (event) => {
+        event.preventDefault();
+        numeroErrorMessage.style.display = 'block';
+        numeroInput.setAttribute('data-message', 'El número debe estar en formato +XXXXXXXXXXX.');
+    });
+
+    numeroInput.addEventListener('input', () => {
+        if (numeroInput.validity.valid) {
+            numeroErrorMessage.style.display = 'none';
+            numeroInput.removeAttribute('data-message');
+        }
+    });
+</script>
+{% endblock headstyle %}
+
+{% block body %}
+<div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <form action="#">
+            <div class="input-container">
+                <span>Editar perfil.</span>
+                <input type="text" placeholder="Nombre de usuario" pattern="[a-zA-Z0-9.]*" id="nombre" required />
+                <input type="tel" placeholder="numero  " pattern="^\+[1-9]\d{10}$" id="numero" required />
+                <span class="error-message" style="display: none;">El número debe estar en formato +XXXXXXXXXXX.</span>
+                <textarea placeholder="direccion" maxlength="200" id="direccion" required></textarea>
+            </div>
+            <button type="submit" formaction="entorno.html">Confirmar</button>
+        </form>
+    </div>
+</div>
+{% endblock body %}
+    
+{% block script %}
+<script>
+    const direccionInput = document.getElementById('direccion');
+    const direccionErrorMessage = document.querySelector('#direccion + .error-message');
+
+    direccionInput.addEventListener('input', () => {
+        const direccionValue = direccionInput.value.trim();
+
+        if (!direccionValue || !/^\w+(?:\s+\w+)*\s+#\d+$/.test(direccionValue)) {
+            direccionInput.setCustomValidity('La dirección debe tener al menos una palabra y un número en el formato "calle #número".');
+            direccionErrorMessage.style.display = 'block';
+        } else {
+            direccionInput.setCustomValidity('');
+            direccionErrorMessage.style.display = 'none';
+        }
+    });
+</script>
+{% endblock script %}

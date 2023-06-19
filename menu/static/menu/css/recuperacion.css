@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Poppins",
+		sans-serif;
+}
+
+
+
+body {
+	background: #f6f5f7;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	font-family: "Montserrat", sans-serif;
+	height: 100vh;
+	margin: -20px 0 50px;
+}
+
+button {
+	border-radius: 20px;
+	border: 1px solid #4070f4;
+	background-color:#4070f4;
+	color: #ffffff;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    margin-top: 27px;
+}
+
+form {
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 0 50px;
+	height: 100%;
+	text-align: center;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+span {
+	font-size: 20px;
+    margin-top: -30px;
+}
+
+.container {
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+	position: relative;
+	overflow: hidden;
+	width: 768px;
+	max-width: 100%;
+	min-height: 480px;
+}
+
+
+.form-container {
+	position: center ;
+	height: 100%;
+}
+
+textarea {
+	background-color: #eee;
+	border: none;
+	padding: 20px 15px;
+	margin: 8px 0;
+	width: 100%;;
+}
+
+input {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+    
+}
+
+
+@media only screen and (max-width: 603px) {
+    .container {
+        width: 603px;
+        max-width: 100%;
+        min-height: 652px;
+        margin: 0 auto;
+    }
+    
+    .form-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .input-container {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    span {
+        margin-top: 0;
+    }
+    
+    button {
+        margin-top: 30px;
+    }
+}

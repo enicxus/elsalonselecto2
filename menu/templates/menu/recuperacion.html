@@ -1,0 +1,35 @@
+{% extends 'menu/PlantillaEntorno.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>El Salón Selecto</title>
+<link  rel="stylesheet" href="{% static 'menu\css\recuperacion.css' %}">
+{% endblock titulo %}
+
+{% block body %}
+<div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <form action="#">
+            {% csrf_token %}
+            <div class="input-container">
+                <span>Recuperar contraseña.</span>
+                <input type="email" placeholder="Correo" id="email" onkeydown="validarInput(event)" required />
+            </div>
+            <button type="submit" formaction="recuperacion2.html">Enviar </button>
+            <br />
+            Se enviará un código a su correo para verificar que es usted.
+        </form>
+    </div>
+</div>
+{% endblock body %}
+    
+{% block script %}
+<script>
+    function validarInput(event) {
+        const teclaPresionada = event.key;
+        if (teclaPresionada === " " || teclaPresionada === "ñ" || teclaPresionada === "Ñ") {
+            event.preventDefault();
+        }
+    }
+</script>
+{% endblock script %}
