@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'menu',
+]
+
+""""
     'rest_framework',
     'rest_direccion',
     'rest_framework.authtoken',
-]
-
+"""
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -83,8 +85,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': '127.0.0.1:1521/orcl',
-        'USER': 'salonselecto',
-        'PASSWORD': 'salonselecto',
+        'USER': 'salonselecto2',
+        'PASSWORD': 'salonselecto2',
         'TEST': {
                 'USER': 'default_test',
                 'TBLSPACE': 'default_test_tbls',
