@@ -121,14 +121,8 @@ form a:hover {
 	text-decoration: underline;
 }
 
-
-
-
 .form.login button[type="submit"] {
 	background: #4070f4;
 	color: #fff;
 	border: none;
 }
-
-
-
