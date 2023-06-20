@@ -24,7 +24,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('menu.urls')),
-    path('api/', include('rest_direccion.urls')),
+
+ 
     
 ###################################################
 #vistas formularios
@@ -36,3 +37,6 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
+
+#path('api/', include('rest_direccion.urls')),
+   
