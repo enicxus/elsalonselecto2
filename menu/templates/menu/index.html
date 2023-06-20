@@ -10,23 +10,6 @@
 
 {% block body %}
 
-<<<<<<< Updated upstream
-<!--  
-  <div class="form login">
-    <header>Registrarse</header>
-    <form method="post" action="{% url 'register' %}">
-      {% csrf_token %}
-      <label for="email">Correo electrónico:</label>
-      <input type="email" id="email" name="email" required>
-      <p>Se enviará un código de activación</p>
-      <input type="hidden" name="action" value="send_code">
-      <button type="submit" formaction="{% url 'register' %}" formmethod="post">
-        Enviar código
-      </button>
-    </form>
-  </div>
---->
-=======
 <form>
 	<div class="svgContainer">
 		<div>
@@ -133,6 +116,5 @@
 		<button id="login">Log in</button>
 	</div>	
 </form>
->>>>>>> Stashed changes
 
 {% endblock body %}
