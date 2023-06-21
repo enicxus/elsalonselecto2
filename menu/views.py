@@ -42,7 +42,8 @@ def register(request):
         
     return render(request, 'index.html')
 """
-
+def registro(request):
+    return render(request,'menu/registro.html')
 
 
 def entorno(request):

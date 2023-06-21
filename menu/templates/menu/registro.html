@@ -1,0 +1,50 @@
+{% extends 'menu/PlantillaEntorno.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>El Salón Selecto</title>
+<link rel="stylesheet" href="{% static 'menu/css/style.css' %}" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'menu/js/vali_index.js' %}"></script>
+{% endblock titulo %}
+
+{% block body %}
+<section class="wrapper">
+  <div class="form signup">
+    <header>Registrarse</header>
+    <form method="post" action="{% url 'registro' %}">
+      {% csrf_token %}
+      <input type="text" id="apodo" name="apodo" placeholder="Apodo" required />
+      <input type="email" id="email" name="email" placeholder="Correo" required />
+      <input
+        type="password"
+        id="contrasena"
+        name="password"
+        placeholder="Contraseña"
+        minlength="10"
+        maxlength="14"
+        required
+      />
+      <input
+        type="password"
+        id="confi_contrasena"
+        name="confi_contrasena"
+        placeholder="Confirmar Contraseña"
+        minlength="10"
+        maxlength="14"
+        required
+      />
+      <input
+        type="input"
+        id="telefono"
+        name="telefono"
+        pattern="[0-9]{11}"
+        placeholder="Teléfono"
+        required
+      />
+      <input type="file" id="foto-perfil" name="foto-perfil" accept="image/*" />
+      <button type="submit" formaction="index.html" class="small-button">Registrarse</button>
+    </form>
+  </div>
+</section>
+{% endblock body %}
