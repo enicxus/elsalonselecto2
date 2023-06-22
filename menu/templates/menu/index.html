@@ -25,7 +25,7 @@
 		  required
 		/>
 		<a href="recuperacion.html">¿Olvidaste tu contraseña?</a>
-		<button type="submit" formaction="entorno.html" class="small-button">Ingresar</button>
+		<button type="submit" formaction="{% url 'login' %}" class="small-button">Ingresar</button>
 	  </form>
 	  {% if error_message %}
 	  <p>{{ error_message }}</p>

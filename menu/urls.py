@@ -1,15 +1,14 @@
 from django.contrib import admin
 from django.urls import path,include
-from .views import  index 
+from .views import index 
 from . import views
-from menu.views import recuperacion, recuperacion2, recuperacion3,entorno,carrito,form,agregar_platillos, platillos,eliminar_platillos,perfil,editar_perfil, pas_nuevo_usuario,val_nuevo_usuario,nosotros,crearnombre, registro
+from menu.views import recuperacion, recuperacion2, recuperacion3,entorno,carrito,form,agregar_platillos, platillos,eliminar_platillos,perfil,editar_perfil, pas_nuevo_usuario,val_nuevo_usuario,nosotros, crearnombre, registro, crear_usuario
 urlpatterns = [
     path('', index, name="index"),
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
     path('register/val_nuevo_usuario.html', views.val_nuevo_usuario, name='val_nuevo_usuario'),
     path('register/pas_nuevo_usuario.html', views.pas_nuevo_usuario, name='pas_nuevo_usuario'),
-    path('validacion_nuevo_usuario.html/', views.validacion_nuevo_usuario, name='validacion_nuevo_usuario'),
     path('mi_formulario/', views.mi_formulario, name='mi_formulario'),
     path('recuperacion.html', recuperacion, name="recuperacion"),
     path('recuperacion2.html', recuperacion2, name="recuperacion2"),
@@ -25,6 +24,6 @@ urlpatterns = [
     path('pas_nuevo_usuario.html', pas_nuevo_usuario, name="pas_nuevo_usuario"),
     path('val_nuevo_usuario.html', val_nuevo_usuario, name="val_nuevo_usuario"),
     path('nosotros.html', nosotros, name="nosotros"),
-    path('registro.html', registro, name="registro")
-
+    path('registro.html', registro, name="registro"),
+    path('crear_usuario/', crear_usuario, name="crear_usuario"),
 ]

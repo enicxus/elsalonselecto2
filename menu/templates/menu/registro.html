@@ -12,7 +12,7 @@
 <section class="wrapper">
   <div class="form signup">
     <header>Registrarse</header>
-    <form method="post" action="{% url 'registro' %}">
+    <form method="post" action="{% url 'register' %}" enctype="multipart/form-data">
       {% csrf_token %}
       <input type="text" id="apodo" name="apodo" placeholder="Apodo" required />
       <input type="email" id="email" name="email" placeholder="Correo" required />
@@ -42,8 +42,9 @@
         placeholder="Teléfono"
         required
       />
+      <p>Foto de Perfil</p>
       <input type="file" id="foto-perfil" name="foto-perfil" accept="image/*" />
-      <button type="submit" formaction="index.html" class="small-button">Enviar codigo</button>
+      <button type="submit" name="action" value="send_code" class="small-button">Enviar Código</button>
     </form>
   </div>
 </section>

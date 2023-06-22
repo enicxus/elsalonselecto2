@@ -5,6 +5,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from random import randint
 from django.contrib import messages
+from django.core.files.storage import FileSystemStorage
+import json
 # Create your views here.
 def index(request):
     return render(request,'menu/index.html')
@@ -18,7 +20,7 @@ def login(request):
         
         # Verifica las credenciales del usuario en la base de datos
         try:
-            usuario = Usuario.objects.get(correo=email, clave=password)
+            usuario = Usuario.objects.get(correo=email, contrasena=password)
         except Usuario.DoesNotExist:
             response = redirect('index')
             response.set_cookie('error_message', 'Correo o contraseña incorrectos')
@@ -137,7 +139,6 @@ def nosotros(request):
 
 def register(request):
     if request.method == 'POST':
-        print("1111111111111")
         if request.POST.get('action') == 'send_code':
             email = request.POST.get('email')
             codigo = f'{randint(1000, 9999)}-{randint(1000, 9999)}'
@@ -151,29 +152,51 @@ def register(request):
             )
             request.session['codigo_correo'] = codigo
             request.session['email'] = email
+            request.session['nombre'] = request.POST.get('apodo')
+            request.session['telefono'] = request.POST.get('telefono')
+            request.session['contrasena'] = request.POST.get('password')
+            foto_perfil = request.FILES.get('foto-perfil')
+            if foto_perfil:
+                request.session['foto'] = foto_perfil.name  # Guardar el nombre del archivo de imagen en la sesión
             return redirect('val_nuevo_usuario')
-        
-        return render(request, 'menu/index.html')
+
+    return render(request, 'registro.html')
 
 
-def validacion_nuevo_usuario(request):
+def crear_usuario(request):
     if request.method == 'POST':
-        codigo_ingresado = request.POST.get('codigo_correo_nuevo_usuario')
-        email = request.session.get('email')
-        codigo_correo = request.session.get('codigo_correo')
+        codigo = request.POST.get('codigo')
+        if codigo == request.session.get('codigo_correo'):
+            nombre = request.session.get('nombre')
+            email = request.session.get('email')
+            telefono = request.session.get('telefono')
+            contrasena = request.session.get('contrasena')
+            foto_perfil = request.session.get('foto')
 
-        if codigo_ingresado == codigo_correo:
-            # El código de validación es correcto
-            request.session['codigo_validado'] = True
-            return redirect('pas_nuevo_usuario')
+            usuario = Usuario(nombre=nombre, correo=email, telefono=telefono, contrasena=contrasena)
+            if foto_perfil:
+                usuario.foto = foto_perfil
+            usuario.save()
+
+            # Limpiar los datos de la sesión
+            request.session.pop('codigo_correo', None)
+            request.session.pop('email', None)
+            request.session.pop('nombre', None)
+            request.session.pop('telefono', None)
+            request.session.pop('contrasena', None)
+            request.session.pop('foto', None)
+
+            # Mostrar un mensaje de éxito
+            messages.success(request, 'Usuario creado exitosamente.')
+
+            return redirect('index')
+
         else:
-            # El código de validación es incorrecto
-            error_message = 'Código de validación incorrecto'
-            return render(request, 'val_nuevo_usuario.html', {'error_message': error_message})
-    else:
-        # Si el método de solicitud no es POST, redirige a la página anterior
-        return redirect('val_nuevo_usuario')
+            # Mostrar un mensaje de error si el código de validación es incorrecto
+            messages.error(request, 'El código de validación es incorrecto.')
+            return redirect('crear_usuario')
 
+    return render(request, 'val_nuevo_usuario.html')
 
 def crearnombreusuario(request):
     if not request.session.get('codigo_validado'):
