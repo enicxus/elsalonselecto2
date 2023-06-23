@@ -1,19 +1,19 @@
 $(document).ready(function () {
-    // Bloquear el uso de la tecla espacio y letra ñ en todos los inputs de tipo texto y email
+    // Bloquea el uso de la tecla espacio y letra ñ en todos los inputs de tipo texto y email
     $('input[type="text"], input[type="email"]').on('keydown', function (e) {
         if (e.keyCode === 32 || e.key === "ñ" || e.key === "Ñ") {
             return false;
         }
     });
 
-    // Bloquear el uso de la tecla espacio en los inputs de tipo password
+    // Bloquea el uso de la tecla espacio en los inputs de tipo password
     $('input[type="password"]').on('keydown', function (e) {
         if (e.keyCode === 32) {
             return false;
         }
     });
 
-    // Validar el correo electrónico en el campo de inicio de sesión
+    // Valida el correo electrónico en el campo de inicio de sesión
     $('#login-email').on('input', function () {
         var email = $(this).val();
         if (!isValidEmail(email)) {
@@ -25,7 +25,7 @@ $(document).ready(function () {
 
 
     
-    // Validar el correo electrónico en el campo de registro
+    // Valida el correo electrónico en el campo de registro
     $('#signup-email').on('input', function () {
         var email = $(this).val();
         if (!isValidEmail(email)) {
