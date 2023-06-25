@@ -32,6 +32,8 @@ def login(request):
         # Guarda el nombre y la foto del usuario en las variables de sesión
         request.session['user_nombre'] = usuario.nombre
         request.session['user_foto'] = usuario.foto.url if usuario.foto else None
+        request.session['user_correo']=usuario.correo
+        request.session['user_telefono']=usuario.telefono
         
         return redirect('entorno')  # Redirige a la página de entorno.html después del inicio de sesión exitoso
     
