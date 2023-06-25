@@ -586,8 +586,8 @@
     <div class="header">
       <div class="user-menu">
         <div class="user-info">
-          <img src="{% static 'menu/img/foto_perfil.jpg' %}" alt="Foto de perfil del usuario">
-          <p class="user-name">Anderson</p>
+          <img src="{% if request.session.user_foto %}{{ request.session.user_foto }}{% else %}{% static 'menu/img/foto_perfil.jpg' %}{% endif %}" alt="Foto de perfil del usuario">
+          <p class="user-name">{{ request.session.user_nombre }}</p>
           <div class="arrow-down"></div>
         </div>
         <div class="dropdown-menu">

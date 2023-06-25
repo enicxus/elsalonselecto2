@@ -127,3 +127,16 @@ form a:hover {
 	height: 30px;
 	font-size: 14px;
 }
+
+/* Tu código CSS actual */
+
+#image-preview {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	margin: 10px auto;
+	background-color: #f1f1f1;
+	background-size: cover;
+	background-position: center;
+  }
+  

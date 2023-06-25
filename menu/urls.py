@@ -3,10 +3,12 @@ from django.urls import path,include
 from .views import index 
 from . import views
 from menu.views import recuperacion, recuperacion2, recuperacion3,entorno,carrito,form,agregar_platillos, platillos,eliminar_platillos,perfil,editar_perfil, pas_nuevo_usuario,val_nuevo_usuario,nosotros, crearnombre, registro, crear_usuario
+# define las url y las asocia a las views
 urlpatterns = [
     path('', index, name="index"),
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
+    path('eliminar_platillos/', views.eliminar_platillos, name='eliminar_platillos'),
     path('register/val_nuevo_usuario.html', views.val_nuevo_usuario, name='val_nuevo_usuario'),
     path('register/pas_nuevo_usuario.html', views.pas_nuevo_usuario, name='pas_nuevo_usuario'),
     path('mi_formulario/', views.mi_formulario, name='mi_formulario'),

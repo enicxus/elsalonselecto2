@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from .models import Usuario,Comida
 from django.core.mail import send_mail
@@ -8,6 +8,9 @@ from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 import json
 # Create your views here.
+
+#crea las vistas cada url
+
 def index(request):
     return render(request,'menu/index.html')
 
@@ -26,6 +29,10 @@ def login(request):
             response.set_cookie('error_message', 'Correo o contraseña incorrectos')
             return response
         
+        # Guarda el nombre y la foto del usuario en las variables de sesión
+        request.session['user_nombre'] = usuario.nombre
+        request.session['user_foto'] = usuario.foto.url if usuario.foto else None
+        
         return redirect('entorno')  # Redirige a la página de entorno.html después del inicio de sesión exitoso
     
     error_message = request.COOKIES.get('error_message')
@@ -33,6 +40,30 @@ def login(request):
     response.delete_cookie('error_message')
     return response
 
+def register(request):
+    if request.method == 'POST':
+        if request.POST.get('action') == 'send_code':
+            email = request.POST.get('email')
+            codigo = f'{randint(1000, 9999)}-{randint(1000, 9999)}'
+            mensaje = f'Tu código de validación es: {codigo}'
+            send_mail(
+                'Código de validación',
+                mensaje,
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+            request.session['codigo_correo'] = codigo
+            request.session['email'] = email
+            request.session['nombre'] = request.POST.get('apodo')
+            request.session['telefono'] = request.POST.get('telefono')
+            request.session['contrasena'] = request.POST.get('password')
+            foto_perfil = request.FILES.get('foto-perfil')
+            if foto_perfil:
+                request.session['foto'] = foto_perfil.name  # Guardar el nombre del archivo de imagen en la sesión
+            return redirect('val_nuevo_usuario')
+
+    return render(request, 'registro.html')
 """
 
 def register(request):
@@ -82,13 +113,23 @@ def entorno(request):
     context = {'comida': comidas}
     return render(request, 'menu/entorno.html', context)
 
-
 def eliminar_platillos(request):
+    if request.method == 'POST':
+        platillo_id = request.POST.get('platillo_id')  # Obtener el ID del platillo desde el formulario
+
+        try:
+            platillo = get_object_or_404(Comida, id_comida=platillo_id)  # Obtener el platillo según su ID
+            platillo.delete()  # Eliminar el platillo
+            messages.success(request, 'Platillo eliminado exitosamente.')
+        except Comida.DoesNotExist:
+            messages.error(request, 'El platillo no existe.')
+
     platillos = Comida.objects.all()
     context = {
         'platillos': platillos
     }
     return render(request, 'menu/eliminar_platillos.html', context)
+
 
 def perfil(request):
     return render(request,'menu/perfil.html')
@@ -130,37 +171,10 @@ def validacion_nuevo_usuario(request):
     return render(request, 'val_nuevo_usuario.html')
 """
 
-
-
-
 def nosotros(request):
     return render(request,'menu/nosotros.html')
 
 
-def register(request):
-    if request.method == 'POST':
-        if request.POST.get('action') == 'send_code':
-            email = request.POST.get('email')
-            codigo = f'{randint(1000, 9999)}-{randint(1000, 9999)}'
-            mensaje = f'Tu código de validación es: {codigo}'
-            send_mail(
-                'Código de validación',
-                mensaje,
-                settings.DEFAULT_FROM_EMAIL,
-                [email],
-                fail_silently=False,
-            )
-            request.session['codigo_correo'] = codigo
-            request.session['email'] = email
-            request.session['nombre'] = request.POST.get('apodo')
-            request.session['telefono'] = request.POST.get('telefono')
-            request.session['contrasena'] = request.POST.get('password')
-            foto_perfil = request.FILES.get('foto-perfil')
-            if foto_perfil:
-                request.session['foto'] = foto_perfil.name  # Guardar el nombre del archivo de imagen en la sesión
-            return redirect('val_nuevo_usuario')
-
-    return render(request, 'registro.html')
 
 
 def crear_usuario(request):
@@ -219,3 +233,7 @@ def crearnombreusuario(request):
         return redirect('entorno')
     else:
         return render(request, 'menu/index.html')
+    
+
+
+    
