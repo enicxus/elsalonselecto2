@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path,include
 from .views import index 
 from . import views
-from menu.views import recuperacion, recuperacion2, recuperacion3,entorno,carrito,form,agregar_platillos, platillos,eliminar_platillos,perfil,editar_perfil, pas_nuevo_usuario,val_nuevo_usuario,nosotros, crearnombre, registro, crear_usuario
+from menu.views import recuperacion, recuperacion2, recuperacion3,entorno,carrito,form,agregar_platillos, platillos,eliminar_platillos,perfil,editar_perfil, pas_nuevo_usuario,val_nuevo_usuario,nosotros, crearnombre, registro, crear_usuario, cambiar_contra
 # define las url y las asocia a las views
 urlpatterns = [
     path('', index, name="index"),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('register/val_nuevo_usuario.html', views.val_nuevo_usuario, name='val_nuevo_usuario'),
     path('register/pas_nuevo_usuario.html', views.pas_nuevo_usuario, name='pas_nuevo_usuario'),
     path('mi_formulario/', views.mi_formulario, name='mi_formulario'),
+    path('recupcontra/', views.recupcontra, name='recupcontra'),
     path('recuperacion.html', recuperacion, name="recuperacion"),
     path('recuperacion2.html', recuperacion2, name="recuperacion2"),
     path('recuperacion3.html', recuperacion3, name="recuperacion3"),
@@ -28,4 +29,5 @@ urlpatterns = [
     path('nosotros.html', nosotros, name="nosotros"),
     path('registro.html', registro, name="registro"),
     path('crear_usuario/', crear_usuario, name="crear_usuario"),
+    path('cambiar_contra.html', cambiar_contra, name="cambiar_contra"),
 ]

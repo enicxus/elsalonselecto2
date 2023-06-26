@@ -3,20 +3,18 @@
 
 {% block titulo %}
 <title>El Salón Selecto</title>
-<link rel="stylesheet" href="{% static 'menu\css\recuperacion.css' %}"/>
+<link rel="stylesheet" href="{% static 'menu\css\style.css' %}"/>
 {% endblock titulo %}
 
 {% block body %}
-<div class="container" id="container">
-    <div class="form-container sign-up-container">
-        <form action="#">
+<section class="wrapper">
+    <div class="form signup">
+        <header>Recuperar contraseña.</header>
+        <form method="POST" action="#">
             {% csrf_token %}
-            <div class="input-container">
-                <span>Recuperar contraseña.</span>
-                <input type="text" placeholder="XXXX-XXXX" minlength="9" maxlength="9" pattern="\d{4}-\d{4}"  id="codigo_veri" required title="Debe ingresar un número de 8 dígitos separados por un guión (-). Ejemplo: 1234-5678">
-            </div>
+            <input type="text" placeholder="XXXX-XXXX" minlength="9" maxlength="9" pattern="\d{4}-\d{4}"  id="codigo_veri" required title="Debe ingresar un número de 8 dígitos separados por un guión (-). Ejemplo: 1234-5678">
             <button type="submit" formaction="recuperacion3.html">Confirmar</button>
         </form>
     </div>
-</div>
+</section>
 {% endblock body %}

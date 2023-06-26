@@ -66,6 +66,27 @@ def register(request):
             return redirect('val_nuevo_usuario')
 
     return render(request, 'registro.html')
+
+def recupcontra(request):
+    if request.method == 'POST':
+        if request.POST.get('action') == 'send_code':
+            email = request.POST.get('email')
+            codigo = f'{randint(1000, 9999)}-{randint(1000, 9999)}'
+            mensaje = f'Tu código para recuperar contraseña es: {codigo}'
+            send_mail(
+                'Código de validación',
+                mensaje,
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+            request.session['codigo_correo'] = codigo
+            request.session['email'] = email
+
+            return redirect('recuperacion2')
+
+    return render(request, 'recuperacion.html')
+
 """
 
 def register(request):
@@ -176,7 +197,8 @@ def validacion_nuevo_usuario(request):
 def nosotros(request):
     return render(request,'menu/nosotros.html')
 
-
+def cambiar_contra(request):
+    return render(request, 'menu/cambiar_contra.html')
 
 
 def crear_usuario(request):
@@ -235,7 +257,3 @@ def crearnombreusuario(request):
         return redirect('entorno')
     else:
         return render(request, 'menu/index.html')
-    
-
-
-    

@@ -9,7 +9,7 @@
 {% block body %}
 <section class="wrapper">
     <div class="form signup">
-        <header>Recuperar contraseña.</header>
+        <header>Cambiar Contraseña.</header>
         <form method="POST" action="{% url 'recupcontra' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="email" placeholder="Correo" id="email" required />
