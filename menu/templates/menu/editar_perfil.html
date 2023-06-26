@@ -1,66 +1,31 @@
+<!-- editar_perfil.html -->
 {% extends 'menu/PlantillaEntorno.html' %}
 {% load static %}
 
 {% block titulo %}
 <title>El Salón Selecto</title>
+<link rel="stylesheet" href="{% static 'menu/css/style.css' %}" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'menu/js/vali_index.js' %}"></script>
 {% endblock titulo %}
 
-{% block estilos %}
-<link rel="stylesheet" href="{% static 'menu\css\recuperacion.css' %}" />
-{% endblock estilos %}
-
-{% block headstyle %}
-<script>
-    const numeroInput = document.getElementById('numero');
-    const numeroErrorMessage = document.querySelector('#numero + .error-message');
-
-    numeroInput.addEventListener('invalid', (event) => {
-        event.preventDefault();
-        numeroErrorMessage.style.display = 'block';
-        numeroInput.setAttribute('data-message', 'El número debe estar en formato +XXXXXXXXXXX.');
-    });
-
-    numeroInput.addEventListener('input', () => {
-        if (numeroInput.validity.valid) {
-            numeroErrorMessage.style.display = 'none';
-            numeroInput.removeAttribute('data-message');
-        }
-    });
-</script>
-{% endblock headstyle %}
-
 {% block body %}
-<div class="container" id="container">
-    <div class="form-container sign-up-container">
-        <form action="#">
-            <div class="input-container">
-                <span>Editar perfil.</span>
-                <input type="text" placeholder="Nombre de usuario" pattern="[a-zA-Z0-9.]*" id="nombre" required />
-                <input type="tel" placeholder="numero  " pattern="^\+[1-9]\d{10}$" id="numero" required />
-                <span class="error-message" style="display: none;">El número debe estar en formato +XXXXXXXXXXX.</span>
-                <textarea placeholder="direccion" maxlength="200" id="direccion" required></textarea>
-            </div>
-            <button type="submit" formaction="entorno.html">Confirmar</button>
-        </form>
-    </div>
-</div>
+<section class="wrapper">
+  <div class="form signup">
+    <header>Editar perfil</header>
+    <form method="post" action="#">
+      {% csrf_token %}
+      <input type="text" id="apodo" name="apodo" placeholder="Apodo" value="{{ usuario.nombre }}" required />
+      <input type="input" id="telefono" name="telefono" pattern="[0-9]{11}" placeholder="Teléfono" value="{{ usuario.telefono }}" required />
+      <input type="input" id="direccion" name="direccion" placeholder="Dirección" value="{{ usuario.direccion }}" required />
+      <p>Foto de Perfil</p>
+      <input type="file" id="foto-perfil" name="foto-perfil" accept="image/*" />
+      {% if usuario.foto %}
+      <img src="{{ usuario.foto.url }}" alt="Foto de Perfil" />
+      {% endif %}
+      <button type="submit" formaction="entorno.html" class="small-button">Confirmar</button>
+    </form>
+  </div>
+</section>
 {% endblock body %}
-    
-{% block script %}
-<script>
-    const direccionInput = document.getElementById('direccion');
-    const direccionErrorMessage = document.querySelector('#direccion + .error-message');
 
-    direccionInput.addEventListener('input', () => {
-        const direccionValue = direccionInput.value.trim();
-
-        if (!direccionValue || !/^\w+(?:\s+\w+)*\s+#\d+$/.test(direccionValue)) {
-            direccionInput.setCustomValidity('La dirección debe tener al menos una palabra y un número en el formato "calle #número".');
-            direccionErrorMessage.style.display = 'block';
-        } else {
-            direccionInput.setCustomValidity('');
-            direccionErrorMessage.style.display = 'none';
-        }
-    });
-</script>
-{% endblock script %}
