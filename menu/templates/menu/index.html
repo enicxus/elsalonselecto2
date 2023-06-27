@@ -8,13 +8,17 @@
 <script src="{% static 'menu/js/vali_index.js' %}"></script>
 {% endblock titulo %}
 
+<!-- iniciar sesion -->
 {% block body %}
 <section class="wrapper">
 	<div class="form signup">
 	  <header>Iniciar sesión</header>
+	  <!-- formulario inicio de sesion -->
 	  <form method="post" action="{% url 'login' %}">
 		{% csrf_token %}
+		<!-- campo correo electronico -->
 		<input type="email" id="login-email" name="email" placeholder="Correo" required />
+		<!-- contraseña -->
 		<input
 		  type="password"
 		  id="login-password"
@@ -24,13 +28,14 @@
 		  maxlength="14"
 		  required
 		/>
+		<!-- enlace para recuperar contraseña -->
 		<a href="recuperacion.html">¿Olvidaste tu contraseña?</a>
 		<button type="submit" formaction="{% url 'login' %}" class="small-button">Ingresar</button>
 	  </form>
 	  {% if error_message %}
 	  <p>{{ error_message }}</p>
 	{% endif %}
-
+	<!-- formulario de registro -->
 	<form>
 		<button type="submit" formaction="registro.html" class="small-button">Registrarse</button>
 	</form>
