@@ -67,12 +67,12 @@ def register(request):
 
     return render(request, 'registro.html')
 
-def recupcontra(request):
+def cambiarcontra(request):
     if request.method == 'POST':
         if request.POST.get('action') == 'send_code':
             email = request.POST.get('email')
-            codigo = f'{randint(1000, 9999)}-{randint(1000, 9999)}'
-            mensaje = f'Tu código para recuperar contraseña es: {codigo}'
+            codigocontra = f'{randint(1000, 9999)}-{randint(1000, 9999)}'
+            mensaje = f'Tu código para recuperar contraseña es: {codigocontra}'
             send_mail(
                 'Código de validación',
                 mensaje,
@@ -80,12 +80,17 @@ def recupcontra(request):
                 [email],
                 fail_silently=False,
             )
-            request.session['codigo_correo'] = codigo
+            request.session['codigo_correo_contra'] = codigocontra
             request.session['email'] = email
 
             return redirect('recuperacion2')
 
-    return render(request, 'recuperacion.html')
+    return render(request, 'cambiar_contra.html')
+
+def cambiarcontra2(request):
+    if request.method == 'POST':
+        codigocontrasena = request.POST.get('codigo_correo_contra')
+        
 
 """
 
