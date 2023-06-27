@@ -103,8 +103,8 @@
               <div class="info-item">
                 <i class="fas fa-map-marker-alt"></i>
                 <span>Dirección:</span>
-                <span>123 Main St, Anytown, USA</span>
-              </div>
+                <span id="direccion">123 Main St, Anytown, USA</span>
+              </div>              
             </div>
             <div class="profile-buttons">
               <a href="editar_perfil.html">
@@ -124,4 +124,30 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='https://vjs.zencdn.net/5-unsafe/video.js'></script>
 <script src="{% static 'menu\js\script_entorno.js' %}"></script>
+<script>// Comprueba si el navegador admite la geolocalización
+  if (navigator.geolocation) {
+    // Obtén la posición actual del dispositivo
+    navigator.geolocation.getCurrentPosition(function(position) {
+      // Obtiene las coordenadas de latitud y longitud
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+  
+      // Hacer una solicitud a la API de geocodificación inversa para obtener la dirección
+      fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=TU_API_KEY`)
+        .then(response => response.json())
+        .then(data => {
+          // Obtén la dirección de la respuesta de la API
+          const direccion = data[0].name;
+          
+          // Actualiza el contenido del elemento <span> con el ID "direccion"
+          document.getElementById("direccion").textContent = direccion;
+        })
+        .catch(error => {
+          console.error("Error al obtener la dirección:", error);
+        });
+    });
+  } else {
+    console.error("La geolocalización no es compatible en este navegador.");
+  }
+  </script>
 {% endblock script %}
