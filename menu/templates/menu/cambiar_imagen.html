@@ -1,0 +1,12 @@
+{% extends 'menu/PlantillaEntorno.html' %}
+{% load static %}
+{% block content %}
+  <div class="image-options">
+    <a href="{% url 'cambiar_imagen' %}?foto=media/Usuario/Mujer.png">
+      <img src="{% static 'Usuario/Mujer.png' %}" alt="Imagen de mujer">
+    </a>
+    <a href="{% url 'cambiar_imagen' %}?foto=media/Usuario/Hombre.png">
+      <img src="{% static 'Usuario/Hombre.png' %}" alt="Imagen de hombre">
+    </a>
+  </div>
+{% endblock %}

@@ -34,6 +34,7 @@ def login(request):
         request.session['user_foto'] = usuario.foto.url if usuario.foto else None
         request.session['user_correo']=usuario.correo
         request.session['user_telefono']=usuario.telefono
+        request.session['user_id']=usuario.id_usuario
         
         return redirect('entorno')  # Redirige a la página de entorno.html después del inicio de sesión exitoso
     
@@ -60,9 +61,7 @@ def register(request):
             request.session['nombre'] = request.POST.get('apodo')
             request.session['telefono'] = request.POST.get('telefono')
             request.session['contrasena'] = request.POST.get('password')
-            foto_perfil = request.FILES.get('foto-perfil')
-            if foto_perfil:
-                request.session['foto'] = foto_perfil.name  # Guardar el nombre del archivo de imagen en la sesión
+            
             return redirect('val_nuevo_usuario')
 
     return render(request, 'registro.html')
@@ -103,6 +102,30 @@ def register(request):
         
     return render(request, 'index.html')
 """
+
+
+
+def cambiar_imagen(request):
+    if request.method == 'POST':
+        nuevo_foto = request.POST.get('foto')
+        usuario_id = request.session.get('user_id')
+        usuario = Usuario.objects.get(id_usuario=usuario_id)
+        usuario.foto = nuevo_foto
+        usuario.save()
+        return redirect('perfil')
+    else:
+        return render(request, 'menu/cambiar_imagen.html')
+
+
+
+
+
+
+
+
+
+
+
 def registro(request):
     return render(request,'menu/registro.html')
 
@@ -214,11 +237,8 @@ def crear_usuario(request):
             email = request.session.get('email')
             telefono = request.session.get('telefono')
             contrasena = request.session.get('contrasena')
-            foto_perfil = request.session.get('foto')
 
             usuario = Usuario(nombre=nombre, correo=email, telefono=telefono, contrasena=contrasena)
-            if foto_perfil:
-                usuario.foto = foto_perfil
             usuario.save()
 
             # Limpiar los datos de la sesión
@@ -227,7 +247,6 @@ def crear_usuario(request):
             request.session.pop('nombre', None)
             request.session.pop('telefono', None)
             request.session.pop('contrasena', None)
-            request.session.pop('foto', None)
 
             # Mostrar un mensaje de éxito
             messages.success(request, 'Usuario creado exitosamente.')

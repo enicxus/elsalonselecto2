@@ -1,20 +1,21 @@
-{% extends 'menu/PlantillaEntorno.html' %}
-{% load static %}
-
-{% block titulo %}
+{% extends 'menu/PlantillaEntorno.html' %} {% load static %} {% block titulo %}
 <title>El Salón Selecto</title>
-<link rel="stylesheet" href="{% static 'menu\css\style.css' %}"/>
-{% endblock titulo %}
-
-{% block body %}
+<link rel="stylesheet" href="{% static 'menu\css\style.css' %}" />
+{% endblock titulo %} {% block body %}
 <section class="wrapper">
-    <div class="form">
-      <header>Validar Nuevo Usuario</header>
-      <form method="post" action="{% url 'crear_usuario' %}">
-        {% csrf_token %}
-        <input type="text" id="codigo" name="codigo" placeholder="Código de Validación" required />
-        <button type="submit" class="small-button">Crear Usuario</button>
-      </form>
-    </div>
-  </section>
+  <div class="form">
+    <header>Validar Nuevo Usuario</header>
+    <form method="post" action="{% url 'crear_usuario' %}">
+      {% csrf_token %}
+      <input
+        type="text"
+        id="codigo"
+        name="codigo"
+        placeholder="Código de Validación"
+        required
+      />
+      <button type="submit" class="small-button">Crear Usuario</button>
+    </form>
+  </div>
+</section>
 {% endblock body %}

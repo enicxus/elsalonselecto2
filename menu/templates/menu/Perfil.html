@@ -84,9 +84,11 @@
     <div class="main-container">
       <div class="title">Perfil</div>
       <div class="profile-section">
-          <div class="profile-image">
+        <div class="profile-image">
+          <a href="{% url 'cambiar_imagen' %}">
             <img src="{{ request.session.user_foto }}" alt="Foto de perfil del usuario">
-          </div>
+          </a>
+        </div>
           <div class="profile-details">
             <h2>{{ request.session.user_nombre }}</h2>
             <div class="profile-info">
