@@ -69,27 +69,54 @@ def register(request):
 def cambiarcontra(request):
     if request.method == 'POST':
         if request.POST.get('action') == 'send_code':
-            email = request.POST.get('email')
+            emailuser = request.session['email']
             codigocontra = f'{randint(1000, 9999)}-{randint(1000, 9999)}'
             mensaje = f'Tu código para recuperar contraseña es: {codigocontra}'
             send_mail(
                 'Código de validación',
                 mensaje,
                 settings.DEFAULT_FROM_EMAIL,
-                [email],
+                [emailuser],
                 fail_silently=False,
             )
+            
             request.session['codigo_correo_contra'] = codigocontra
-            request.session['email'] = email
+            request.session['nuevacontra'] = request.POST.get('nuevapassword')
+            request.session['nuevacontraconf'] = request.POST.get('confirmarnuevapassword')
 
-            return redirect('recuperacion2')
+            return redirect('val_cambiar_contra')
 
-    return render(request, 'cambiar_contra.html')
+    return render(request, 'menu/cambiar_contra.html')
 
 def cambiarcontra2(request):
     if request.method == 'POST':
-        codigocontrasena = request.POST.get('codigo_correo_contra')
+        codigocontra = request.POST.get('codigo')
+        if codigocontra == request.session.get('codigo_correo_contra'):
+            nuevacontrasena = request.session.get('nuevacontra')
+            confirnuevacontrasena = request.session.get('nuevacontraconf')
+            usuario_id = request.session.get('user_id')
+            usuario = Usuario.objects.get(id_usuario = usuario_id)
+            
+            if nuevacontrasena == confirnuevacontrasena:
+                
+                usuario.contrasena = nuevacontrasena
+                usuario.save()
+                
+                request.session.pop('contrasena', None)
+                
+                messages.success(request, 'Contraseña actualizada correctamente.')
+            
+            else:
+                messages.error(request, 'Las contraseñas no coinciden.')
+                
+            return redirect('index')
+                
+        else:
+            messages.error(request, 'El código ingresado no es correcto.')
         
+        return redirect('val_cambiar_contra')
+
+    return render(request, 'menu/val_cambiar_contra.html')
 
 """
 
@@ -121,10 +148,11 @@ def cambiar_imagen(request):
 
 
 
+def verificarcorreo(request):
+    return render(request, 'menu/val_cambiar_contra.html')
 
-
-
-
+def val_cambiar_contra(request):
+    return render(request, 'menu/val_cambiar_contra.html')
 
 def registro(request):
     return render(request,'menu/registro.html')
@@ -227,7 +255,6 @@ def nosotros(request):
 
 def cambiar_contra(request):
     return render(request, 'menu/cambiar_contra.html')
-
 
 def crear_usuario(request):
     if request.method == 'POST':

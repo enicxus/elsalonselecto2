@@ -1,0 +1,25 @@
+{% extends 'menu/PlantillaEntorno.html' %} {% load static %}
+
+{% block titulo %}
+<title>El Salón Selecto</title>
+<link rel="stylesheet" href="{% static 'menu\css\style.css' %}" />
+{% endblock titulo %}
+
+{% block body %}
+<section class="wrapper">
+  <div class="form">
+    <header>Validar Cambio Contraseña</header>
+    <form method="post" action="{% url 'cambiarcontra2' %}">
+      {% csrf_token %}
+      <input
+        type="text"
+        id="codigo"
+        name="codigo"
+        placeholder="Código de Validación"
+        required
+      />
+      <button type="submit" class="small-button">Cambiar Contraseña</button>
+    </form>
+  </div>
+</section>
+{% endblock body %}

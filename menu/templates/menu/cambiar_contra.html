@@ -9,13 +9,13 @@
 {% block body %}
 <section class="wrapper">
     <div class="form signup">
-        <header>Cambiar Contraseña.</header>
+        <header>Cambiar Contraseña</header>
         <form method="POST" action="{% url 'cambiarcontra' %}" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="text" id="nuevapassword" name="nuevapassword" placeholder="Nueva Contraseña." required></input>
+            <input type="password" id="nuevapassword" name="nuevapassword" placeholder="Nueva Contraseña." required></input>
             <br>
-            <input type="text" id="confirmarnuevapassword" name="confirmarnuevapassword" placeholder="Confirme Nueva Contraseña." required></input>
-            <button type="submit" name="action" value="send_code" formaction="cambiarcontra">Confirmar Contraseña</button>
+            <input type="password" id="confirmarnuevapassword" name="confirmarnuevapassword" placeholder="Confirme Nueva Contraseña." required></input>
+            <button type="submit" name="action" value="send_code">Confirmar Contraseña</button>
             <br>
             Al cambiar la contraseña, se le enviará un código de verificación para comprobar que es usted.
         </form>
