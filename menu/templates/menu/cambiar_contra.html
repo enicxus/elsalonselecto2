@@ -10,7 +10,7 @@
 <section class="wrapper">
     <div class="form signup">
         <header>Cambiar Contraseña</header>
-        <form method="POST" action="{% url 'cambiarcontra' %}" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'cambiarcontra' %}">
             {% csrf_token %}
             <input type="password" id="nuevapassword" name="nuevapassword" placeholder="Nueva Contraseña." required></input>
             <br>

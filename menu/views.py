@@ -69,9 +69,9 @@ def register(request):
 def cambiarcontra(request):
     if request.method == 'POST':
         if request.POST.get('action') == 'send_code':
-            emailuser = request.session['email']
+            emailuser = request.session['user_correo']
             codigocontra = f'{randint(1000, 9999)}-{randint(1000, 9999)}'
-            mensaje = f'Tu código para recuperar contraseña es: {codigocontra}'
+            mensaje = f'Tu código para cambiar contraseña es: {codigocontra}'
             send_mail(
                 'Código de validación',
                 mensaje,
@@ -79,7 +79,7 @@ def cambiarcontra(request):
                 [emailuser],
                 fail_silently=False,
             )
-            
+
             request.session['codigo_correo_contra'] = codigocontra
             request.session['nuevacontra'] = request.POST.get('nuevapassword')
             request.session['nuevacontraconf'] = request.POST.get('confirmarnuevapassword')
@@ -104,7 +104,7 @@ def cambiarcontra2(request):
                 
                 request.session.pop('contrasena', None)
                 
-                messages.success(request, 'Contraseña actualizada correctamente.')
+                messages.success(request, 'Contraseña ha sido actualizada correctamente.')
             
             else:
                 messages.error(request, 'Las contraseñas no coinciden.')
@@ -116,7 +116,7 @@ def cambiarcontra2(request):
         
         return redirect('val_cambiar_contra')
 
-    return render(request, 'menu/val_cambiar_contra.html')
+    return render(request, 'menu/index.html')
 
 """
 
