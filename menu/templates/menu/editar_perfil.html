@@ -7,6 +7,18 @@
 <link rel="stylesheet" href="{% static 'menu/css/style.css' %}" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'menu/js/vali_index.js' %}"></script>
+<style>
+  .profile-picture {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-picture img {
+    border-radius: 50%;
+    width: 150px; /* Ajusta el tamaño según tus necesidades */
+    height: 150px; /* Ajusta el tamaño según tus necesidades */
+  }
+</style>
 {% endblock titulo %}
 
 {% block body %}
@@ -15,14 +27,14 @@
     <header>Editar perfil</header>
     <form method="post" action="#">
       {% csrf_token %}
-      <input type="text" id="apodo" name="apodo" placeholder="Apodo" value="{{ usuario.nombre }}" required />
-      <input type="input" id="telefono" name="telefono" pattern="[0-9]{11}" placeholder="Teléfono" value="{{ usuario.telefono }}" required />
+      <input type="text" id="apodo" name="apodo" placeholder="Apodo" value="{{ request.session.user_nombre }}" required />
+      <input type="input" id="telefono" name="telefono" pattern="[0-9]{11}" placeholder="Teléfono" value="{{ request.session.user_telefono }}" required />
       <input type="input" id="direccion" name="direccion" placeholder="Dirección" value="{{ usuario.direccion }}" required />
       <p>Foto de Perfil</p>
       <input type="file" id="foto-perfil" name="foto-perfil" accept="image/*" />
-      {% if usuario.foto %}
-      <img src="{{ usuario.foto.url }}" alt="Foto de Perfil" />
-      {% endif %}
+      {% if foto_perfil %}
+      <img src="{{ foto_perfil }}" alt="Foto de Perfil" />
+      {% endif %}      
       <button type="submit" formaction="entorno.html" class="small-button">Confirmar</button>
     </form>
   </div>

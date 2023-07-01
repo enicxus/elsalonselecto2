@@ -214,8 +214,26 @@ def perfil(request):
     return render(request,'menu/perfil.html')
 
 def editar_perfil(request):
-    return render(request,'menu/editar_perfil.html')
-
+    # Obtener el objeto Usuario de la base de datos
+    usuario = Usuario.objects.get(id_usuario=request.session['user_id'])
+    
+    if request.method == 'POST':
+        # Actualizar los campos del perfil con los valores ingresados por el usuario
+        usuario.apodo = request.POST['apodo']
+        usuario.telefono = request.POST['telefono']
+        usuario.foto = request.FILES.get('foto-perfil')
+        usuario.save()
+        
+        # Actualizar la variable de sesión con los nuevos valores
+        request.session['user_apodo'] = usuario.apodo
+        request.session['user_telefono'] = usuario.telefono
+        
+        return redirect('ruta_perfil')  # Redirigir a la página de perfil actualizado
+        
+    return render(request, 'menu/editar_perfil.html', {
+        'usuario': usuario,
+        'foto_perfil': usuario.foto.url if usuario.foto else None,
+    })
 def pas_nuevo_usuario(request):
     return render(request,'menu/pas_nuevo_usuario.html')
 
