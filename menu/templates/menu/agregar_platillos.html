@@ -140,14 +140,15 @@
             <label for="precio">Precio</label>
             <input type="number" id="precio_platillo" name="precio_platillo" placeholder="Ingresa el precio del platillo" required>
           </div>
+          <div class="input-box">
+            <label for="especial">Platillo Especial</label>
+            <input type="checkbox" id="especial_platillo" name="especial_platillo">
+          </div>
         </div>
-        <table>
-          {{ forms.as_table }}
-        </table>
         <div class="button">
           <input id="agregarBtn" type="submit" value="Agregar">
         </div>
-      </form>
+      </form>      
     </div>
 {% endblock body %}
 

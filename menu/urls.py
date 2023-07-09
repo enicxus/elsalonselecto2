@@ -1,9 +1,10 @@
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from .views import index 
 from . import views
-from menu.views import recuperacion, recuperacion2, recuperacion3,entorno,carrito,form,agregar_platillos, platillos,eliminar_platillos,perfil,editar_perfil, pas_nuevo_usuario,val_nuevo_usuario,nosotros, crearnombre, registro, crear_usuario, cambiar_contra, cambiar_contra, val_cambiar_contra, verificarcorreo
-# define las url y las asocia a las views
+from menu.views import recuperacion, recuperacion2, recuperacion3, entorno, carrito, form, agregar_platillos, platillos, eliminar_platillos, perfil, editar_perfil, pas_nuevo_usuario, val_nuevo_usuario, nosotros, crearnombre, registro, crear_usuario, cambiar_contra, val_cambiar_contra, verificarcorreo
+
+# Define las URL y las asocia a las vistas
 urlpatterns = [
     path('', index, name="index"),
     path('login/', views.login, name='login'),
@@ -22,7 +23,7 @@ urlpatterns = [
     path('carrito.html', carrito, name="carrito"),
     path('form.html', form, name="form"),
     path('agregar_platillos.html', agregar_platillos, name="agregar_platillos"),
-    path('platillos.html', platillos, name=" platillos"),
+    path('platillos.html', platillos, name="platillos"),
     path('eliminar_platillos.html', eliminar_platillos, name="eliminar_platillos"),
     path('Perfil.html', perfil, name="perfil"),
     path('editar_perfil.html', editar_perfil, name="editar_perfil"),

@@ -105,14 +105,18 @@
               </div>
               <p id="average-rating">Promedio de valoración: </p>
               <br><br>
-              <a href="#" class="boton-comprar">Comprar</a>
+              <form action="{% url 'carrito' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="comida_id" value="{{ comida.id_comida }}">
+                <button type="submit" class="boton-comprar">Comprar</button>
+              </form>
             </div>
           </div>
           {% endfor %}
         </div>
       </div>
       
-      </div>
+      
 {% endblock body %}
 
 {% block script %}

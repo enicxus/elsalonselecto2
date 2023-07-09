@@ -174,13 +174,38 @@ def form(request):
     return render(request,'menu/form.html')
 
 def carrito(request):
-    comidas = Comida.objects.all()
+    if request.method == 'POST':
+        comida_id = request.POST.get('comida_id')  # Obtener el ID del platillo seleccionado desde el formulario
+        # Aquí debes implementar la lógica para agregar el platillo al carrito
+        # Puedes almacenar los platillos en la sesión del usuario o en una base de datos
+
+        # Por ejemplo, si las comidas agregadas se almacenan en la sesión del usuario
+        carrito = request.session.get('carrito', [])  # Obtener las comidas del carrito desde la sesión
+        carrito.append(comida_id)  # Agregar el ID del platillo seleccionado al carrito
+        request.session['carrito'] = carrito  # Actualizar el carrito en la sesión
+
+    comidas_agregadas = request.session.get('carrito', [])  # Obtener las comidas del carrito desde la sesión
+    comidas = Comida.objects.filter(id_comida__in=comidas_agregadas)
+
     context = {'comidas': comidas}
     return render(request, 'menu/carrito.html', context)
 
 def agregar_platillos(request):
-    
-    return render(request,'menu/agregar_platillos.html')
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre_platillo')
+        descripcion = request.POST.get('descripcion_platillo')
+        ingredientes = request.POST.get('ingredientes_platillo')
+        foto = request.FILES['imagen_platillo']
+        precio = request.POST.get('precio_platillo')
+        especial = request.POST.get('especial_platillo') == 'on'  # Verifica si el checkbox está seleccionado
+
+        comida = Comida(nombre=nombre, descripcion=descripcion, ingredientes=ingredientes, foto=foto, precio=precio,especial=especial)
+        comida.save()
+        
+        
+        return redirect('entorno')
+
+    return render(request, 'menu/agregar_platillos.html')
 
 def platillos(request):
     comidas = Comida.objects.all()
