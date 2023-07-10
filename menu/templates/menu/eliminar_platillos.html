@@ -119,22 +119,22 @@
       {% endblock %}
 
       <form method="POST" action="{% url 'eliminar_platillos' %}">
-  {% csrf_token %}
-  <div class="Informacion-del-Usuario">
-    <div class="product-list">
-      {% for platillo in platillos %}
-      <div class="product">
-        <div class="product-info">
-          <h3 class="product-title">{{ platillo.nombre }}</h3>
-          <p class="product-description">{{ platillo.descripcion }}</p>
-          <p class="product-price">{{ platillo.precio }}</p>
+        {% csrf_token %}
+        <div class="Informacion-del-Usuario">
+          <div class="product-list">
+            {% for platillo in platillos %}
+            <div class="product">
+              <div class="product-info">
+                <h3 class="product-title">{{ platillo.nombre }}</h3>
+                <p class="product-description">{{ platillo.descripcion }}</p>
+                <p class="product-price">{{ platillo.precio }}</p>
+              </div>
+              <button class="remove-product" type="submit" name="platillo_id" value="{{ platillo.id_comida }}">Eliminar</button>
+            </div>
+            {% endfor %}
+          </div>
         </div>
-        <button class="remove-product" name="platillo_id" value="{{ platillo.id_comida }}">Eliminar</button>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</form>
+      </form>
     </div>
 {% endblock body %}
 

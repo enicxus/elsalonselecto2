@@ -113,10 +113,10 @@
         <div class="cart-item-details">
           <img class="comida" src="{{ comida.foto.url }}" alt="{{ comida.nombre }}">
           <h3>{{ comida.nombre }}</h3>
-          <p class="price">Precio: {{ comida.precio }}</p>
+          <p class="price">Precio: ${{ comida.precio }}</p>
           <div class="quantity">
             <label for="qty">Cantidad:</label>
-            <input type="number" id="qty" name="quantity" min="1" value="1">
+            <input type="number" class="cantidad" id="qty" name="quantity" min="1" value="1">
           </div>
           <p class="subtotal">Subtotal: ${{ comida.precio }}</p>
         </div>
@@ -135,5 +135,22 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Obtén todos los campos de cantidad por su clase
+    const camposCantidad = document.querySelectorAll('.cantidad');
+    
+    // Agrega un evento de escucha a cada campo de cantidad
+    camposCantidad.forEach(function (campo) {
+      campo.addEventListener('input', function () {
+        const cantidad = parseInt(this.value); // Obtén el valor de cantidad como entero
+        const precioUnitario = parseInt(this.closest('.cart-item-details').querySelector('.precio').textContent.replace('Precio: $', '')); // Obtén el precio unitario desde el elemento de precio
+        const subtotal = cantidad * precioUnitario; // Calcula el subtotal multiplicando cantidad por precioUnitario
+        this.closest('.cart-item-details').querySelector('.subtotal').textContent = 'Subtotal: $' + subtotal; // Actualiza el elemento de subtotal con el nuevo valor
+      });
+    });
+  });
+</script>
 
 {% endblock script %}

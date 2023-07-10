@@ -217,23 +217,20 @@ def entorno(request):
     context = {'comida': comidas}
     return render(request, 'menu/entorno.html', context)
 
+def modificar_platillos(request):
+    comidas = Comida.objects.all()
+    context = {'comida': comidas}
+    return render(request,'menu/modificar_platillos.html')
+
 def eliminar_platillos(request):
     if request.method == 'POST':
-        platillo_id = request.POST.get('platillo_id')  # Obtener el ID del platillo desde el formulario
-
-        try:
-            platillo = get_object_or_404(Comida, id_comida=platillo_id)  # Obtener el platillo según su ID
-            platillo.delete()  # Eliminar el platillo
-            messages.success(request, 'Platillo eliminado exitosamente.')
-        except Comida.DoesNotExist:
-            messages.error(request, 'El platillo no existe.')
-
+        platillo_id = int(request.POST['platillo_id'])
+        platillo = Comida.objects.get(pk=platillo_id)
+        platillo.delete()
+        return redirect('eliminar_platillos')
+    
     platillos = Comida.objects.all()
-    context = {
-        'platillos': platillos
-    }
-    return render(request, 'menu/eliminar_platillos.html', context)
-
+    return render(request, 'menu/eliminar_platillos.html', {'platillos': platillos})
 
 def perfil(request):
     return render(request,'menu/perfil.html')
