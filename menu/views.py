@@ -215,7 +215,10 @@ def entorno(request):
 def modificar_platillos(request):
     comidas = Comida.objects.all()
     context = {'comida': comidas}
-    return render(request,'menu/modificar_platillos.html')
+    return render(request,'menu/modificar_platillos.html', context)
+
+def modificar_form(request):
+    return render(request,'menu/modificar_form.html')
 
 def eliminar_platillos(request):
     if request.method == 'POST':

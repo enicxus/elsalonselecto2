@@ -140,4 +140,58 @@ form a:hover {
 	background-position: center;
   }
 
+  .checkbox-container {
+	display: flex;
+	align-items: center;
+  }
+  
+  .checkbox-container .checkbox-label {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	cursor: pointer;
+  }
+  
+  .checkbox-container .styled-checkbox {
+	display: none;
+  }
+  
+  .checkbox-container .checkbox-custom {
+	width: 20px;
+	height: 20px;
+	border: 2px solid #4070f4;
+	border-radius: 4px;
+	margin-right: 10px;
+	position: relative;
+  }
+  
+  .checkbox-container .checkbox-custom::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 10px;
+	height: 10px;
+	background-color: #4070f4;
+	border-radius: 2px;
+	opacity: 0;
+	transition: opacity 0.3s;
+  }
+  
+  .checkbox-container .styled-checkbox:checked ~ .checkbox-custom::after {
+	opacity: 1;
+  }
+  
+  .checkbox-container .checkbox-label:hover .checkbox-custom::after {
+	opacity: 0.5;
+  }
+  
+  .checkbox-container .checkbox-label:hover .checkbox-custom {
+	border-color: #333;
+  }
+  
+  .checkbox-container .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+	opacity: 1;
+  }
   
