@@ -251,6 +251,7 @@ def editar_perfil(request):
         'usuario': usuario,
         'foto_perfil': usuario.foto.url if usuario.foto else None,
     })
+
 def pas_nuevo_usuario(request):
     return render(request,'menu/pas_nuevo_usuario.html')
 

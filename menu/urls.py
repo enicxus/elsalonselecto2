@@ -3,7 +3,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import path,include
 from .views import index
 from . import views
-from menu.views import recuperacion, recuperacion2, recuperacion3,entorno,carrito,form,agregar_platillos, platillos,eliminar_platillos,perfil,editar_perfil, pas_nuevo_usuario,val_nuevo_usuario,nosotros, crearnombre, registro, crear_usuario, cambiar_contra, cambiar_contra, val_cambiar_contra, verificarcorreo, cerrar_sesion, iniciar_sesion
+from menu.views import recuperacion, recuperacion2, recuperacion3,entorno,carrito,form,agregar_platillos, platillos,eliminar_platillos, modificar_platillos, perfil,editar_perfil, pas_nuevo_usuario,val_nuevo_usuario,nosotros, crearnombre, registro, crear_usuario, cambiar_contra, cambiar_contra, val_cambiar_contra, verificarcorreo, cerrar_sesion, iniciar_sesion
 # define las url y las asocia a las views
 urlpatterns = [
     path('', index, name="index"),
