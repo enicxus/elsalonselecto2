@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from .models import Usuario,Comida
 from django.core.mail import send_mail
 from django.conf import settings
@@ -7,13 +8,15 @@ from random import randint
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 import json
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 # Create your views here.
 
 #crea las vistas cada url
 
 def index(request):
     return render(request,'menu/index.html')
-
 
 def login(request):
     if request.method == 'POST':
@@ -101,7 +104,7 @@ def cambiarcontra2(request):
                 
                 usuario.contrasena = nuevacontrasena
                 usuario.save()
-                
+
                 request.session.pop('contrasena', None)
                 
                 messages.success(request, 'Contraseña ha sido actualizada correctamente.')
@@ -131,7 +134,6 @@ def register(request):
 """
 
 
-
 def cambiar_imagen(request):
     if request.method == 'POST':
         nuevo_foto = request.POST.get('foto')
@@ -142,10 +144,7 @@ def cambiar_imagen(request):
         return redirect('perfil')
     else:
         return render(request, 'menu/cambiar_imagen.html')
-
-
-
-
+    
 
 
 def verificarcorreo(request):
@@ -156,10 +155,6 @@ def val_cambiar_contra(request):
 
 def registro(request):
     return render(request,'menu/registro.html')
-
-
-def entorno(request):
-    return render(request,'menu/entorno.html')
 
 def recuperacion(request):
     return render(request,'menu/recuperacion.html')
@@ -233,7 +228,6 @@ def eliminar_platillos(request):
         'platillos': platillos
     }
     return render(request, 'menu/eliminar_platillos.html', context)
-
 
 def perfil(request):
     return render(request,'menu/perfil.html')
@@ -351,3 +345,10 @@ def crearnombreusuario(request):
         return redirect('entorno')
     else:
         return render(request, 'menu/index.html')
+    
+def iniciar_sesion(request):
+    return render(request, 'menu/index.html')
+    
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('index')

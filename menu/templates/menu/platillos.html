@@ -66,21 +66,22 @@
       </div>
   </div>
   <div class="wrapper">
-      <div class="header">
+    <div class="header">
+      <div class="user-menu">
         <div class="user-info">
-          <img src="{% if request.session.user_foto %}{{ request.session.user_foto }}{% else %}{% static 'menu/img/foto_perfil.jpg' %}{% endif %}" alt="Foto de perfil del usuario">
+          <img src="{{ request.session.user_foto }}" alt="Foto de perfil del usuario">
           <p class="user-name">{{ request.session.user_nombre }}</p>
           <div class="arrow-down"></div>
         </div>
-            <div class="dropdown-menu">
-              <ul>
-                <li><a href="{% url 'perfil' %}">Perfil</a></li>
-                <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
-                <li><a href="{% url 'index' %}">Cerrar sesión</a></li>
-              </ul>
-            </div>
-          </div>
+        <div class="dropdown-menu">
+          <ul>
+            <li><a href="{% url 'perfil' %}">Perfil</a></li>
+            <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
+            <li><a href="{% url 'cerrar_sesion' %}">Cerrar sesión</a></li>
+          </ul>
+        </div>
       </div>
+    </div>
       <div class="main-container">
         <div class="menu">
           {% for comida in comida %}
