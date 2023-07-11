@@ -223,8 +223,7 @@ def modificar_form(request):
 def eliminar_platillos(request):
     if request.method == 'POST':
         platillo_id = int(request.POST['platillo_id'])
-        platillo = Comida.objects.get(pk=platillo_id)
-        platillo.delete()
+        Comida.objects.filter(id_comida=platillo_id).delete()
         return redirect('eliminar_platillos')
     
     platillos = Comida.objects.all()
