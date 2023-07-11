@@ -10,10 +10,10 @@
 <section class="wrapper">
     <div class="form signup">
         <header>Recuperar contraseña.</header>
-        <form method="POST" action="#">
+        <form method="POST" action="{% url 'recuperacion2' %}">
             {% csrf_token %}
-            <input type="text" placeholder="XXXX-XXXX" minlength="9" maxlength="9" pattern="\d{4}-\d{4}"  id="codigo_veri" required title="Debe ingresar un número de 8 dígitos separados por un guión (-). Ejemplo: 1234-5678">
-            <button type="submit" formaction="recuperacion3.html">Confirmar</button>
+            <input type="text" placeholder="XXXX-XXXX" minlength="9" maxlength="9" pattern="\d{4}-\d{4}" name="codigo_veri" required title="Debe ingresar un número de 8 dígitos separados por un guión (-). Ejemplo: 1234-5678">
+            <button type="submit">Confirmar</button>
         </form>
     </div>
 </section>

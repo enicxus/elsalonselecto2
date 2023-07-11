@@ -20,14 +20,14 @@
 {% block body %}
 <div class="container" id="container">
     <div class="form-container sign-up-container">
-        <form action="#">
+        <form method="POST" action="{% url 'recuperacion3' %}">
             {% csrf_token %}
             <div class="input-container">
                 <span>Cambiar contraseña.</span>
-                <input type="password" placeholder="Nueva contraseña" id="nueva-contraseña" minlength="10" maxlength="14" onkeydown="validarInput(event)" required />
-                <input type="password" placeholder="Confirmar contraseña" id="confirmar-contraseña" minlength="10" maxlength="14" onkeydown="validarInput(event)" required/>
+                <input type="password" placeholder="Nueva contraseña" name="nueva-contraseña" minlength="10" maxlength="14" onkeydown="validarInput(event)" required />
+                <input type="password" placeholder="Confirmar contraseña" name="confirmar-contraseña" minlength="10" maxlength="14" onkeydown="validarInput(event)" required/>
             </div>
-            <button type="submit" formaction="index.html">Aceptar</button>
+            <button type="submit">Aceptar</button>
         </form>
     </div>
 </div>

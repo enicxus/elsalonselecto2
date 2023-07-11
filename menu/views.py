@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -157,13 +158,52 @@ def registro(request):
     return render(request,'menu/registro.html')
 
 def recuperacion(request):
-    return render(request,'menu/recuperacion.html')
+    if request.method == 'POST':
+        correo = request.POST['email']
+        usuario = Usuario.objects.filter(correo=correo).first()
+        if usuario:
+            codigo_verificacion = generar_codigo_verificacion()
+            # Envío de correo electrónico con el código de verificación
+            enviar_correo_recuperacion(correo, codigo_verificacion)
+            # Almacenar el código de verificación en la sesión del usuario
+            request.session['codigo_verificacion'] = codigo_verificacion
+            request.session['correo'] = correo
+            return redirect('recuperacion2')
+        else:
+            messages.error(request, 'No se encontró ningún usuario con ese correo.')
+            return redirect('recupcontra')
+    return render(request, 'menu/recuperacion.html')
+
 
 def recuperacion2(request):
-    return render(request,'menu/recuperacion2.html')
+    if request.method == 'POST':
+        codigo_verificacion = request.POST['codigo_veri']
+        if 'codigo_verificacion' in request.session and request.session['codigo_verificacion'] == codigo_verificacion:
+            return redirect('recuperacion3')
+        else:
+            messages.error(request, 'El código de verificación no es válido.')
+            return redirect('recuperacion2')
+    return render(request, 'menu/recuperacion2.html')
 
 def recuperacion3(request):
-    return render(request,'menu/recuperacion3.html')
+    if request.method == 'POST':
+        nueva_contraseña = request.POST['nueva-contraseña']
+        confirmar_contraseña = request.POST['confirmar-contraseña']
+        if nueva_contraseña == confirmar_contraseña:
+            correo = request.session.get('correo')
+            usuario = Usuario.objects.filter(correo=correo).first()
+            if usuario:
+                usuario.contrasena = nueva_contraseña
+                usuario.save()
+                messages.success(request, 'Contraseña actualizada exitosamente.')
+                return redirect('index')
+            else:
+                messages.error(request, 'No se encontró ningún usuario con ese correo.')
+                return redirect('recuperacion3')
+        else:
+            messages.error(request, 'Las contraseñas no coinciden.')
+            return redirect('recuperacion3')
+    return render(request, 'menu/recuperacion3.html')
 
 def form(request):
     return render(request,'menu/form.html')
@@ -342,7 +382,6 @@ def crearnombreusuario(request):
             direccion_id=direccion,
         )
         nuevo_usuario.save()
-
         return redirect('entorno')
     else:
         return render(request, 'menu/index.html')
@@ -353,3 +392,32 @@ def iniciar_sesion(request):
 def cerrar_sesion(request):
     logout(request)
     return redirect('index')
+
+# def recupcontra(request):
+#     if request.method == 'POST':
+#         correo = request.POST['email']
+#         usuario = Usuario.objects.filter(correo=correo).first()
+#         if usuario:
+#             codigo_verificacion = generar_codigo_verificacion()
+#             # Envío de correo electrónico con el código de verificación
+#             enviar_correo_recuperacion(correo, codigo_verificacion)
+#             # Almacenar el código de verificación en la sesión del usuario
+#             request.session['codigo_verificacion'] = codigo_verificacion
+#             request.session['correo'] = correo
+#             return redirect('recuperacion2')
+#         else:
+#             messages.error(request, 'No se encontró ningún usuario con ese correo.')
+#             return redirect('recupcontra')
+#     return render(request, 'menu/recuperacion.html')
+
+def generar_codigo_verificacion():
+    # Generar un código de verificación de 8 dígitos
+    return '-'.join(str(random.randint(1000, 9999)) for _ in range(2))
+
+def enviar_correo_recuperacion(correo, codigo_verificacion):
+    # Código para enviar el correo de recuperación a la dirección de correo electrónico proporcionada
+    # Aquí puedes utilizar la función send_mail() de Django o cualquier otra biblioteca para enviar correos electrónicos
+    # Ejemplo utilizando send_mail():
+    subject = 'Recuperación de contraseña'
+    message = f'Tu código de verificación es: {codigo_verificacion}'
+    send_mail(subject, message, 'noreply@example.com', [correo])

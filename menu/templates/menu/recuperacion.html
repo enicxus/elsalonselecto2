@@ -10,12 +10,10 @@
 <section class="wrapper">
     <div class="form signup">
         <header>Recuperar contraseña.</header>
-        <form method="POST" action="{% url 'recupcontra' %}" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'recuperacion' %}">
             {% csrf_token %}
-            <input type="email" placeholder="Correo" id="email" required />
-            <button type="submit" name="action" value="send_code">Enviar </button>
-            <br>
-            Se enviará un código a su correo para verificar que es usted.
+            <input type="email" placeholder="Correo" name="email" required />
+            <button type="submit">Enviar</button>
         </form>
     </div>
 </section>
