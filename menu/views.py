@@ -213,7 +213,6 @@ def recuperacion3(request):
             return redirect('recuperacion3')
     return render(request, 'menu/recuperacion3.html')
 
-@login_required
 def form(request):
     if request.method == 'POST':
         # Obtener los datos del formulario
