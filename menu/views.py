@@ -36,6 +36,7 @@ def login(request):
                 request.session['user_nombre'] = usuario.nombre
                 request.session['user_foto'] = usuario.foto.url if usuario.foto else None
                 request.session['user_correo'] = usuario.correo
+                request.session['user_direccion'] = usuario.direccion
                 request.session['user_telefono'] = usuario.telefono
                 request.session['user_id'] = usuario.id_usuario
                 
@@ -50,7 +51,6 @@ def login(request):
     response = render(request, 'menu/index.html', {'error_message': error_message})
     response.delete_cookie('error_message')
     return response
-
 
 def register(request):
     if request.method == 'POST':

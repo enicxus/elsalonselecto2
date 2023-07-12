@@ -17,6 +17,7 @@ urlpatterns = [
     path('cambiarcontra/', views.cambiarcontra, name='cambiarcontra'),
     path('cambiarcontra2/', views.cambiarcontra2, name='cambiarcontra2'),
     path('cerrar_sesion/', views.cerrar_sesion, name="cerrar_sesion"),
+    path('editarperfil/', views.editarperfil, name="editarperfil"),
     path('iniciar_sesion/', iniciar_sesion, name="iniciar_sesion"),
     path('recuperacion.html', recuperacion, name="recuperacion"),
     path('recuperacion2.html', recuperacion2, name="recuperacion2"),
