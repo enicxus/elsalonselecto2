@@ -29,7 +29,7 @@
 		  required
 		/>
 		<!-- enlace para recuperar contraseña -->
-		<a href="recuperacion.html">¿Olvidaste tu contraseña?</a>
+		<a href="{% url 'recuperacion' %}">¿Olvidaste tu contraseña?</a>
 		<button type="submit" formaction="{% url 'login' %}" class="small-button">Ingresar</button>
 	  </form>
 	  {% if error_message %}
