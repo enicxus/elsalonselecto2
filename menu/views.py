@@ -44,18 +44,10 @@ def login(request):
         except Usuario.DoesNotExist:
             pass
         
-        # Guarda el nombre y la foto del usuario en las variables de sesión
-        request.session['user_nombre'] = usuario.nombre
-        request.session['user_foto'] = usuario.foto.url if usuario.foto else None
-        request.session['user_correo']=usuario.correo
-        request.session['user_direccion'] = usuario.direccion
-        request.session['user_telefono']=usuario.telefono
-        request.session['user_id']=usuario.id_usuario
-        
-        return redirect('entorno')  # Redirige a la página de entorno.html después del inicio de sesión exitoso
-    
+    # Si no se encuentra un usuario o la contraseña no es válida, no realiza ninguna acción
+    # o si la solicitud no es de tipo POST
     error_message = request.COOKIES.get('error_message')
-    response = render(request, 'index.html', {'error_message': error_message})
+    response = render(request, 'menu/index.html', {'error_message': error_message})
     response.delete_cookie('error_message')
     return response
 

@@ -17,11 +17,11 @@
 	  <form method="post" action="{% url 'login' %}">
 		{% csrf_token %}
 		<!-- campo correo electronico -->
-		<input type="email" id="login-email" name="email" placeholder="Correo" required />
+		<input type="email" id="email" name="email" placeholder="Correo" required />
 		<!-- contraseña -->
 		<input
 		  type="password"
-		  id="login-password"
+		  id="password"
 		  name="password"
 		  placeholder="Contraseña"
 		  minlength="10"
