@@ -105,25 +105,26 @@ def cambiarcontra2(request):
             nuevacontrasena = request.session.get('nuevacontra')
             confirnuevacontrasena = request.session.get('nuevacontraconf')
             usuario_id = request.session.get('user_id')
-            usuario = Usuario.objects.get(id_usuario = usuario_id)
-            
+            usuario = Usuario.objects.get(id_usuario=usuario_id)
+
             if nuevacontrasena == confirnuevacontrasena:
-                
-                usuario.contrasena = nuevacontrasena
+                # Cifrar la nueva contraseña
+                contrasena_cifrada = make_password(nuevacontrasena)
+                usuario.contrasena = contrasena_cifrada
                 usuario.save()
 
                 request.session.pop('contrasena', None)
-                
-                messages.success(request, 'Contraseña ha sido actualizada correctamente.')
-            
+
+                messages.success(request, 'La contraseña ha sido actualizada correctamente.')
+
             else:
                 messages.error(request, 'Las contraseñas no coinciden.')
-                
+
             return redirect('index')
-                
+
         else:
             messages.error(request, 'El código ingresado no es correcto.')
-        
+
         return redirect('val_cambiar_contra')
 
     return render(request, 'menu/index.html')
@@ -197,12 +198,18 @@ def recuperacion3(request):
     if request.method == 'POST':
         nueva_contraseña = request.POST['nueva-contraseña']
         confirmar_contraseña = request.POST['confirmar-contraseña']
+        
         if nueva_contraseña == confirmar_contraseña:
             correo = request.session.get('correo')
             usuario = Usuario.objects.filter(correo=correo).first()
+            
             if usuario:
-                usuario.contrasena = nueva_contraseña
+                # Cifrar la nueva contraseña
+                contraseña_cifrada = make_password(nueva_contraseña)
+                
+                usuario.contrasena = contraseña_cifrada
                 usuario.save()
+                
                 messages.success(request, 'Contraseña actualizada exitosamente.')
                 return redirect('index')
             else:
@@ -211,9 +218,9 @@ def recuperacion3(request):
         else:
             messages.error(request, 'Las contraseñas no coinciden.')
             return redirect('recuperacion3')
+    
     return render(request, 'menu/recuperacion3.html')
 
-@login_required
 def form(request):
     if request.method == 'POST':
         # Obtener los datos del formulario
