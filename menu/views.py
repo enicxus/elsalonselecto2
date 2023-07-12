@@ -12,6 +12,7 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.hashers import make_password, check_password
 # Create your views here.
 
 #crea las vistas cada url
@@ -25,27 +26,33 @@ def login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         
-        # Verifica las credenciales del usuario en la base de datos
         try:
-            usuario = Usuario.objects.get(correo=email, contrasena=password)
+            # Busca al usuario por su correo electrónico
+            usuario = Usuario.objects.get(correo=email)
+            
+            # Valida la contraseña cifrada
+            if check_password(password, usuario.contrasena):
+                # Guarda los datos del usuario en las variables de sesión
+                request.session['user_nombre'] = usuario.nombre
+                request.session['user_foto'] = usuario.foto.url if usuario.foto else None
+                request.session['user_correo'] = usuario.correo
+                request.session['user_telefono'] = usuario.telefono
+                request.session['user_id'] = usuario.id_usuario
+                
+                return redirect('entorno')  # Redirige a la página de entorno.html después del inicio de sesión exitoso
+            
         except Usuario.DoesNotExist:
-            response = redirect('index')
-            response.set_cookie('error_message', 'Correo o contraseña incorrectos')
-            return response
+            pass
         
-        # Guarda el nombre y la foto del usuario en las variables de sesión
-        request.session['user_nombre'] = usuario.nombre
-        request.session['user_foto'] = usuario.foto.url if usuario.foto else None
-        request.session['user_correo']=usuario.correo
-        request.session['user_telefono']=usuario.telefono
-        request.session['user_id']=usuario.id_usuario
-        
-        return redirect('entorno')  # Redirige a la página de entorno.html después del inicio de sesión exitoso
+        response = redirect('index')
+        response.set_cookie('error_message', 'Correo o contraseña incorrectos')
+        return response
     
     error_message = request.COOKIES.get('error_message')
     response = render(request, 'index.html', {'error_message': error_message})
     response.delete_cookie('error_message')
     return response
+
 
 def register(request):
     if request.method == 'POST':
@@ -343,7 +350,10 @@ def crear_usuario(request):
             telefono = request.session.get('telefono')
             contrasena = request.session.get('contrasena')
 
-            usuario = Usuario(nombre=nombre, correo=email, telefono=telefono, contrasena=contrasena)
+            # Cifrar la contraseña utilizando make_password
+            contrasena_cifrada = make_password(contrasena)
+
+            usuario = Usuario(nombre=nombre, correo=email, telefono=telefono, contrasena=contrasena_cifrada)
             usuario.save()
 
             # Limpiar los datos de la sesión
@@ -357,7 +367,6 @@ def crear_usuario(request):
             messages.success(request, 'Usuario creado exitosamente.')
 
             return redirect('index')
-
         else:
             # Mostrar un mensaje de error si el código de validación es incorrecto
             messages.error(request, 'El código de validación es incorrecto.')
