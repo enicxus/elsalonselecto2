@@ -150,6 +150,8 @@ def register(request):
 """
 
 
+
+@login_required(login_url='index')
 def cambiar_imagen(request):
     if request.method == 'POST':
         nuevo_foto = request.POST.get('foto')
@@ -220,9 +222,13 @@ def recuperacion3(request):
             return redirect('recuperacion3')
     return render(request, 'menu/recuperacion3.html')
 
+
+@login_required(login_url='index')
 def form(request):
     return render(request,'menu/form.html')
 
+
+@login_required(login_url='index')
 def carrito(request):
     if request.method == 'POST':
         comida_id = request.POST.get('comida_id')  # Obtener el ID del platillo seleccionado desde el formulario
@@ -240,6 +246,8 @@ def carrito(request):
     context = {'comidas': comidas}
     return render(request, 'menu/carrito.html', context)
 
+
+@login_required(login_url='index')
 def agregar_platillos(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre_platillo')
@@ -257,24 +265,34 @@ def agregar_platillos(request):
 
     return render(request, 'menu/agregar_platillos.html')
 
+
+@login_required(login_url='index')
 def platillos(request):
     comidas = Comida.objects.all()
     context = {'comida': comidas}
     return render(request, 'menu/platillos.html', context)
 
+
+@login_required(login_url='index')
 def entorno(request):
     comidas = Comida.objects.filter(especial=True)
     context = {'comida': comidas}
     return render(request, 'menu/entorno.html', context)
 
+
+@login_required(login_url='index')
 def modificar_platillos(request):
     comidas = Comida.objects.all()
     context = {'comida': comidas}
     return render(request,'menu/modificar_platillos.html', context)
 
+
+@login_required(login_url='index')
 def modificar_form(request):
     return render(request,'menu/modificar_form.html')
 
+
+@login_required(login_url='index')
 def eliminar_platillos(request):
     if request.method == 'POST':
         platillo_id = int(request.POST['platillo_id'])
@@ -284,9 +302,13 @@ def eliminar_platillos(request):
     platillos = Comida.objects.all()
     return render(request, 'menu/eliminar_platillos.html', {'platillos': platillos})
 
+
+@login_required(login_url='index')
 def perfil(request):
     return render(request,'menu/perfil.html')
 
+
+@login_required(login_url='index')
 def editar_perfil(request):
     return render(request, 'menu/editar_perfil.html',)
 
@@ -344,9 +366,12 @@ def validacion_nuevo_usuario(request):
     return render(request, 'val_nuevo_usuario.html')
 """
 
+
+@login_required(login_url='index')
 def nosotros(request):
     return render(request,'menu/nosotros.html')
 
+@login_required(login_url='index')
 def cambiar_contra(request):
     return render(request, 'menu/cambiar_contra.html')
 
@@ -409,6 +434,9 @@ def crearnombreusuario(request):
 def iniciar_sesion(request):
     return render(request, 'menu/index.html')
     
+
+
+@login_required(login_url='index')
 def cerrar_sesion(request):
     logout(request)
     return redirect('index')
