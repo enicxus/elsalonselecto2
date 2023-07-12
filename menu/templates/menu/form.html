@@ -163,8 +163,8 @@
         }
       </script>
       {% endblock %}
-    
-      <form action="#" method="POST" onsubmit="return validateForm(event)">
+<!-- onsubmit="return validateForm(event)"-->  
+      <form action="{% url 'form' %}" method="POST">
         {% csrf_token %}
         <div class="Informacion-del-Usuario">
           <div class="input-box">
@@ -172,12 +172,12 @@
             <input type="number" id="rut" name="rut" placeholder="Ingresa tu Rut" required>
           </div>
           <div class="input-box">
-            <label for="nombre_titular">Nombre del titular</label>
-            <input type="text" id="nombre_titular" name="nombre_titular" placeholder="Ingresa el Nombre del Titular" required>
+            <label for="titular">Nombre del titular</label>
+            <input type="text" id="titular" name="titular" placeholder="Ingresa el Nombre del Titular" required>
           </div>
           <div class="input-box">
             <label for="numero_tarjeta">Número de la tarjeta</label>
-            <input type="number" id="numero_tarjeta" name="numero_tarjeta" placeholder="Ingresa el Número de la Tarjeta" required>
+            <input type="text" id="numero_tarjeta" name="numero_tarjeta" placeholder="Ingresa el Número de la Tarjeta" required>
           </div>
           <div class="input-box">
             <label for="fecha_vencimiento">Fecha de Vencimiento</label>
@@ -185,7 +185,7 @@
           </div>
           <div class="input-box">
             <label for="codigo_seguridad">Código de seguridad</label>
-            <input type="number" id="codigo_seguridad" name="codigo_seguridad" placeholder="Ingresa el Código de Seguridad" required>
+            <input type="number" id="codigo_seguridad" name="codigo_seguridad" minlength="3" maxlength="3" placeholder="Ingresa el Código de Seguridad" required>
           </div>
         </div>
         <div class="button">

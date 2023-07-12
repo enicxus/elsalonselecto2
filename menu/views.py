@@ -2,8 +2,7 @@ import random
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.http import JsonResponse
-from .models import Usuario,Comida
+from .models import Usuario,Comida, Tarjeta
 from django.core.mail import send_mail
 from django.conf import settings
 from random import randint
@@ -151,7 +150,7 @@ def register(request):
 
 
 
-@login_required(login_url='index')
+
 def cambiar_imagen(request):
     if request.method == 'POST':
         nuevo_foto = request.POST.get('foto')
@@ -222,13 +221,37 @@ def recuperacion3(request):
             return redirect('recuperacion3')
     return render(request, 'menu/recuperacion3.html')
 
-
-@login_required(login_url='index')
+@login_required
 def form(request):
-    return render(request,'menu/form.html')
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        rut = request.POST.get('rut')
+        titular = request.POST.get('titular')
+        numero_tarjeta = request.POST.get('numero_tarjeta')
+        codigo_seguridad = str(request.POST.get('codigo_seguridad'))
+        fecha_vencimiento = request.POST.get('fecha_vencimiento')
+
+        # Crear una nueva instancia de Tarjeta y asignar los valores
+        tarjeta = Tarjeta.objects.create(
+            rut=rut,
+            titular=titular,
+            numero_tarjeta=numero_tarjeta,
+            codigo_seguridad=codigo_seguridad,
+            fecha_vencimiento=fecha_vencimiento
+        )
+
+        # Asociar la tarjeta al usuario actualmente autenticado
+        usuario = request.user
+        usuario.tarjeta_id = tarjeta.id_tarjeta
+        usuario.save()
+
+        # Redirigir a una página de éxito o realizar otras acciones
+        return redirect('form')
+
+    return render(request, 'menu/form.html')
 
 
-@login_required(login_url='index')
+
 def carrito(request):
     if request.method == 'POST':
         comida_id = request.POST.get('comida_id')  # Obtener el ID del platillo seleccionado desde el formulario
@@ -247,7 +270,7 @@ def carrito(request):
     return render(request, 'menu/carrito.html', context)
 
 
-@login_required(login_url='index')
+
 def agregar_platillos(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre_platillo')
@@ -266,33 +289,41 @@ def agregar_platillos(request):
     return render(request, 'menu/agregar_platillos.html')
 
 
-@login_required(login_url='index')
+
 def platillos(request):
     comidas = Comida.objects.all()
     context = {'comida': comidas}
     return render(request, 'menu/platillos.html', context)
 
 
-@login_required(login_url='index')
+
 def entorno(request):
     comidas = Comida.objects.filter(especial=True)
     context = {'comida': comidas}
     return render(request, 'menu/entorno.html', context)
 
 
-@login_required(login_url='index')
+
 def modificar_platillos(request):
     comidas = Comida.objects.all()
     context = {'comida': comidas}
     return render(request,'menu/modificar_platillos.html', context)
 
+def modificar_form(request, pk):
+    platillo = get_object_or_404(Comida, pk=pk)
 
-@login_required(login_url='index')
-def modificar_form(request):
-    return render(request,'menu/modificar_form.html')
+    if request.method == 'POST':
+        # Procesar los datos enviados en el formulario y guardar los cambios
+        print("")
+        # ...     
+    else:
+        context = {
+            'platillo': platillo,
+        }
+        return render(request, 'menu/modificar_form.html', context)
 
 
-@login_required(login_url='index')
+
 def eliminar_platillos(request):
     if request.method == 'POST':
         platillo_id = int(request.POST['platillo_id'])
@@ -303,12 +334,12 @@ def eliminar_platillos(request):
     return render(request, 'menu/eliminar_platillos.html', {'platillos': platillos})
 
 
-@login_required(login_url='index')
+
 def perfil(request):
     return render(request,'menu/perfil.html')
 
 
-@login_required(login_url='index')
+
 def editar_perfil(request):
     return render(request, 'menu/editar_perfil.html',)
 
@@ -367,11 +398,11 @@ def validacion_nuevo_usuario(request):
 """
 
 
-@login_required(login_url='index')
+
 def nosotros(request):
     return render(request,'menu/nosotros.html')
 
-@login_required(login_url='index')
+
 def cambiar_contra(request):
     return render(request, 'menu/cambiar_contra.html')
 
@@ -436,7 +467,7 @@ def iniciar_sesion(request):
     
 
 
-@login_required(login_url='index')
+
 def cerrar_sesion(request):
     logout(request)
     return redirect('index')

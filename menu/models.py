@@ -22,14 +22,15 @@ class Usuario(models.Model):
     direccion = models.CharField(max_length=100, null=True)
     telefono = models.CharField(max_length=12)
     contrasena = models.CharField(max_length=100)
+    tarjeta = models.ForeignKey('Tarjeta', on_delete=models.SET_NULL, null=True)
 
-    def __str__(self) :
+    def __str__(self):
         return self.correo
 # representa la tabla tarjeta 
 class Tarjeta(models.Model):
     id_tarjeta = models.AutoField(primary_key=True)
     rut = models.CharField(max_length=20)
     titular = models.CharField(max_length=50)
-    numero_tarjeta = models.IntegerField()
-    codigo_seguridad = models.IntegerField()
+    numero_tarjeta = models.CharField(max_length=20)
+    codigo_seguridad = models.CharField(max_length=3, null=True)
     fecha_vencimiento = models.DateField()

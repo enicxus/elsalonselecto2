@@ -14,28 +14,30 @@
   <div class="form signup">
     <header>Modificar platillo</header>
     <form method="post" action="#">
-        {% csrf_token %}
-        
-        <input type="file" id="imagen_platillo" name="imagen_platillo" accept="image/*" required>
-        
-        <input type="text" id="nombre_platillo" name="nombre_platillo" placeholder="Ingresa el nombre del platillo" required>
-        
-        <input type="text" id="descripcion_platillo" name="descripcion_platillo" placeholder="Ingresa una breve descripción del platillo" required>
-        
-        <input type="text" id="ingredientes_platillo" name="ingredientes_platillo" placeholder="Ingresa los ingredientes del platillo" required>
-        
-        <input type="number" id="precio_platillo" name="precio_platillo" placeholder="Ingresa el precio del platillo" required>
-        
-        <div class="checkbox-container">
-            <label class="checkbox-label">
-              <input type="checkbox" id="especial_platillo" name="especial_platillo" class="styled-checkbox">
-              <span class="checkbox-custom"></span>
-              Platillo Especial
-            </label>
-          </div>
-        <button type="submit" formaction="entorno.html" class="small-button">Confirmar</button>
+      {% csrf_token %}
+
+      <input type="file" id="imagen_platillo" name="imagen_platillo" accept="image/*" required>
+
+      <input type="text" id="nombre_platillo" name="nombre_platillo" placeholder="Ingresa el nombre del platillo"
+        value="{{ platillo.nombre }}" required>
+      <input type="text" id="descripcion_platillo" name="descripcion_platillo"
+        placeholder="Ingresa una breve descripción del platillo" value="{{ platillo.descripcion }}" required>
+      <input type="text" id="ingredientes_platillo" name="ingredientes_platillo"
+        placeholder="Ingresa los ingredientes del platillo" value="{{ platillo.ingredientes }}" required>
+      <input type="number" id="precio_platillo" name="precio_platillo" placeholder="Ingresa el precio del platillo"
+        value="{{ platillo.precio }}" required>
+      <input type="checkbox" id="especial_platillo" name="especial_platillo" class="styled-checkbox" {% if
+        platillo.especial %}checked{% endif %}>
+
+      <div class="checkbox-container">
+        <label class="checkbox-label">
+          <input type="checkbox" id="especial_platillo" name="especial_platillo" class="styled-checkbox">
+          <span class="checkbox-custom"></span>
+          Platillo Especial
+        </label>
+      </div>
+      <button type="submit" formaction="entorno.html" class="small-button">Confirmar</button>
     </form>
   </div>
 </section>
 {% endblock body %}
-
