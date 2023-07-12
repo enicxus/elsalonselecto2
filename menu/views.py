@@ -2,6 +2,7 @@ import random
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.http import JsonResponse
 from .models import Usuario,Comida
 from django.core.mail import send_mail
 from django.conf import settings
@@ -44,9 +45,15 @@ def login(request):
         except Usuario.DoesNotExist:
             pass
         
-        response = redirect('index')
-        response.set_cookie('error_message', 'Correo o contraseña incorrectos')
-        return response
+        # Guarda el nombre y la foto del usuario en las variables de sesión
+        request.session['user_nombre'] = usuario.nombre
+        request.session['user_foto'] = usuario.foto.url if usuario.foto else None
+        request.session['user_correo']=usuario.correo
+        request.session['user_direccion'] = usuario.direccion
+        request.session['user_telefono']=usuario.telefono
+        request.session['user_id']=usuario.id_usuario
+        
+        return redirect('entorno')  # Redirige a la página de entorno.html después del inicio de sesión exitoso
     
     error_message = request.COOKIES.get('error_message')
     response = render(request, 'index.html', {'error_message': error_message})
@@ -70,6 +77,7 @@ def register(request):
             request.session['codigo_correo'] = codigo
             request.session['email'] = email
             request.session['nombre'] = request.POST.get('apodo')
+            request.session['direccion'] = request.POST.get('direccion')
             request.session['telefono'] = request.POST.get('telefono')
             request.session['contrasena'] = request.POST.get('password')
             
@@ -280,26 +288,27 @@ def perfil(request):
     return render(request,'menu/perfil.html')
 
 def editar_perfil(request):
+    return render(request, 'menu/editar_perfil.html',)
+
+def editarperfil(request):
     # Obtener el objeto Usuario de la base de datos
     usuario = Usuario.objects.get(id_usuario=request.session['user_id'])
     
     if request.method == 'POST':
         # Actualizar los campos del perfil con los valores ingresados por el usuario
-        usuario.apodo = request.POST['apodo']
-        usuario.telefono = request.POST['telefono']
+        usuario.nombre = request.POST.get('apodo')
+        usuario.direccion = request.POST.get('direccion')
+        usuario.telefono = request.POST.get('telefono')
         usuario.foto = request.FILES.get('foto-perfil')
         usuario.save()
         
         # Actualizar la variable de sesión con los nuevos valores
-        request.session['user_apodo'] = usuario.apodo
+        request.session['user_nombre'] = usuario.nombre
         request.session['user_telefono'] = usuario.telefono
-        
-        return redirect('ruta_perfil')  # Redirigir a la página de perfil actualizado
-        
-    return render(request, 'menu/editar_perfil.html', {
-        'usuario': usuario,
-        'foto_perfil': usuario.foto.url if usuario.foto else None,
-    })
+        request.session['user_direccion'] = usuario.direccion
+        request.session['user_foto'] = usuario.foto.url if usuario.foto else ''
+    
+    return render(request, 'menu/perfil.html')
 
 def pas_nuevo_usuario(request):
     return render(request,'menu/pas_nuevo_usuario.html')
@@ -347,19 +356,21 @@ def crear_usuario(request):
         if codigo == request.session.get('codigo_correo'):
             nombre = request.session.get('nombre')
             email = request.session.get('email')
+            direccion = request.session.get('direccion')
             telefono = request.session.get('telefono')
             contrasena = request.session.get('contrasena')
 
             # Cifrar la contraseña utilizando make_password
             contrasena_cifrada = make_password(contrasena)
 
-            usuario = Usuario(nombre=nombre, correo=email, telefono=telefono, contrasena=contrasena_cifrada)
+            usuario = Usuario(nombre=nombre, correo=email, telefono=telefono, contrasena=contrasena_cifrada, direccion=direccion)
             usuario.save()
 
             # Limpiar los datos de la sesión
             request.session.pop('codigo_correo', None)
             request.session.pop('email', None)
             request.session.pop('nombre', None)
+            request.session.pop('direccion', None)
             request.session.pop('telefono', None)
             request.session.pop('contrasena', None)
 

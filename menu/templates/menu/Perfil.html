@@ -105,11 +105,11 @@
               <div class="info-item">
                 <i class="fas fa-map-marker-alt"></i>
                 <span>Dirección:</span>
-                <span id="direccion">123 Main St, Anytown, USA</span>
+                <span id="direccion">{{ request.session.user_direccion }}</span>
               </div>              
             </div>
             <div class="profile-buttons">
-              <a href="editar_perfil.html">
+              <a href="{% url 'editar_perfil' %}">
                 <button id="edit-profile-btn">Editar perfil</button>
               </a>
               <a href="cambiar_contra.html">

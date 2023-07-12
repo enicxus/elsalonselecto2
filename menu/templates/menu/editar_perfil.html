@@ -25,17 +25,17 @@
 <section class="wrapper">
   <div class="form signup">
     <header>Editar perfil</header>
-    <form method="post" action="#">
+    <form method="post" action="{% url 'editarperfil' %}">
       {% csrf_token %}
       <input type="text" id="apodo" name="apodo" placeholder="Apodo" value="{{ request.session.user_nombre }}" required />
       <input type="input" id="telefono" name="telefono" pattern="[0-9]{11}" placeholder="Teléfono" value="{{ request.session.user_telefono }}" required />
-      <input type="input" id="direccion" name="direccion" placeholder="Dirección" value="{{ usuario.direccion }}" required />
+      <input type="input" id="direccion" name="direccion" placeholder="Dirección" value="{{ request.session.user_direccion }}" required />
       <p>Foto de Perfil</p>
       <input type="file" id="foto-perfil" name="foto-perfil" accept="image/*" />
       {% if foto_perfil %}
       <img src="{{ foto_perfil }}" alt="Foto de Perfil" />
       {% endif %}      
-      <button type="submit" formaction="entorno.html" class="small-button">Confirmar</button>
+      <button type="submit" formaction="{% url 'editarperfil' %}" class="small-button">Confirmar</button>
     </form>
   </div>
 </section>

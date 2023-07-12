@@ -19,6 +19,7 @@ class Usuario(models.Model):
     foto = models.ImageField(upload_to='Usuario')
     nombre = models.CharField(max_length=50)
     correo = models.EmailField()
+    direccion = models.CharField(max_length=100, null=True)
     telefono = models.CharField(max_length=12)
     contrasena = models.CharField(max_length=100)
 
